@@ -1,0 +1,204 @@
+# Estatíticas {#sec-graficos-estatisticos}
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+source("_options.R")
+```
+
+## Introdução
+
+Neste capítulo, trataremos sobre alguns gráficos comuns na área da estatística, utilizando o pacote `ggplot2`.
+
+```{r}
+library(ggplot2)
+```
+
+Para os exemplos, utilizaremos o mesmo conjunto de dados utilizados no @sec-visualizar, presente no arquivo `alunos.csv`.
+
+```{r}
+dados_alunos <- readr::read_csv("dados/alunos.csv")
+
+dados_alunos
+```
+
+## Histogramas
+
+Neste primeiro caso, faremos um **histograma** referente à média ponderada dos alunos.
+
+Esse tipo de gráfico é útil para verificar a frequência e a distribuição de uma variável numérica que assume uma ampla gama de valores (variável quantitativa contínua). Sua construção é dada pela divisão do eixo x em barras igualmente espaçadas e, no eixo y, apresenta o número de observações dos respectivos intervalos.
+
+Para isso, utilizamos a função `geom_histogram()`, sendo necessário indicar somente o argumento `x =`, pois o eixo y será construído, automaticamente, pela contagem dos valores.
+
+```{r}
+#| message: true
+
+ggplot(dados_alunos, aes(x = media_ponderada)) +
+  geom_histogram()
+```
+
+Podemos definir a largura dos intervalos ou a quantidade de barras de um histograma utilizando os argumentos `binwidth =` e `bins =`, respectivamente. Em relação à largura dos intervalos, o argumento recebe uma medida nas unidades da variável `x`. Já a quantidade de barras, por padrão, é atribuído 30 intervalos.
+
+```{r}
+#| layout-ncol: 2
+
+# Gráfico à esquerda
+ggplot(dados_alunos, aes(x = media_ponderada)) +
+  geom_histogram(binwidth = 0.5)
+
+# Gráfico à direita
+ggplot(dados_alunos, aes(x = media_ponderada)) +
+  geom_histogram(bins = 8)
+```
+
+No gráfico à esquerda, definimos uma largura de intervalos em 0.5, ou seja, as notas vão de 0.5 em 0.5. Enquanto isso, no gráfico à direita, definimos 8 barras para a apresentação do histograma.
+
+De acordo com o valor atribuído a quaisquer dos argumentos, podemos observar diferentes padrões. Dessa forma, é importante explorar uma variedade de valores até que os dados estejam bem ajustados ao histograma.
+
+Para melhorar a aparência do histograma, utilizamos o argumento `color =` para colorir as bordas das barras e o `fill =` para preencher o seu interior com cor.
+
+```{r}
+#| layout-ncol: 2
+
+# Gráfico à esquerda
+ggplot(dados_alunos, aes(x = media_ponderada)) +
+  geom_histogram(binwidth = 0.5, color = "black", fill = "#00AEF3")
+
+# Gráfico à direita
+ggplot(dados_alunos, aes(x = media_ponderada)) +
+  geom_histogram(bins = 8, color = "black", fill = "#1FC361")
+```
+
+## Gráfico de densidade
+
+Uma outra alternativa para representar variáveis numéricas contínuas é o **gráfico de densidade**. Para isso, utilizamos a função `geom_density()`. Este gráfico é uma versão suavizada do histograma que nos fornece uma noção sobre a simetria dos dados.
+
+```{r}
+ggplot(dados_alunos, aes(x = media_ponderada)) +
+  geom_density()
+```
+
+Podemos preencher seu interior com o argumento `fill =` e alterar a transparência da cor com o `alpha =`.
+
+```{r}
+ggplot(dados_alunos, aes(x = media_ponderada)) +
+  geom_density(fill = "#AEC70D", alpha = 0.3)
+```
+
+Também podemos representar mais de uma densidade em um mesmo gráfico. Basta atribuir uma variável categórica ao argumento `fill =` e/ou `color =` para diferenciar as densidades.
+
+```{r}
+ggplot(dados_alunos, aes(x = media_ponderada, color = sexo, fill = sexo)) +
+  geom_density(alpha = 0.3)
+```
+
+## Boxplot
+
+O **boxplot** ou **gráfico de caixas** é muito útil para observarmos a posição e a distribuição de valores. Além disso, permite identificar possíveis observações atípicas do conjunto de dados. Para fazermos os boxplots, utilizamos a função `geom_boxplot()`.
+
+```{r}
+ggplot(dados_alunos, aes(y = media_ponderada)) +
+  geom_boxplot()
+```
+
+Nesse primeiro caso, fizemos um boxplot da média ponderada de todos os alunos. A observação representada por um ponto é um valor atípico aos dados.
+
+Podemos incluir uma variável categórica ao boxplot. Como por exemplo, distinguir os dados de acordo com a variável `futuro`.
+
+```{r}
+ggplot(dados_alunos, aes(x = futuro, y = media_ponderada)) +
+  geom_boxplot()
+```
+
+Neste caso, podemos ver a distribuição da média ponderada dos estudantes de acordo com as perspectivas futuras de cada um. Para isso, atribuímos a variável categórica `futuro` ao eixo x.
+
+Ainda, podemos incluir uma segunda variável categórica. Agora, dividiremos os dados de acordo com as perspectivas futuras e o sexo.
+
+```{r}
+ggplot(dados_alunos, aes(x = futuro, y = media_ponderada, fill = sexo)) +
+  geom_boxplot()
+```
+
+Para isso, atribuimos a variável `sexo` ao argumento `fill =`, distinguindo o sexo dos estudantes por cor. Como resultado, podemos observar a distribuição das médias ponderadas de acordo com o sexo e a perspectiva futura dos alunos.
+
+Para conferir os valores utilizados para construir o boxplot, podemos utilizar a função `summary()`.
+
+```{r}
+# Todos os valores de `media_ponderada`
+summary(dados_alunos$media_ponderada)
+
+# Valores agrupados por `futuro`
+dados_alunos |> 
+  dplyr::group_by(futuro) |> 
+  dplyr::summarise(
+    summary(media_ponderada) |> rbind() |> tibble::as_tibble()
+  )
+
+# Valores agrupados por `futuro` e `sexo`
+dados_alunos |> 
+  dplyr::group_by(futuro, sexo) |> 
+  dplyr::summarise(
+    summary(media_ponderada) |> rbind() |> tibble::as_tibble()
+  )
+```
+
+Por fim, para calcular a amplitude interquartil (cujo cálculo se dá pela subtração do valor do 3º quartil com o do 1º quartil) utilizamos a função `IQR()`.
+
+```{r}
+# Todos os valores de `media_ponderada`
+IQR(dados_alunos$media_ponderada)
+
+# Valores agrupados por `futuro`
+dados_alunos |> 
+  dplyr::group_by(futuro) |> 
+  dplyr::summarise(iqr = IQR(media_ponderada))
+
+# Valores agrupados por `futuro` e `sexo`
+dados_alunos |> 
+  dplyr::group_by(futuro, sexo) |> 
+  dplyr::summarise(iqr = IQR(media_ponderada))
+```
+
+## Gráfico de barras com desvios padrão
+
+Para adicionar desvios padrão ao gráfico de barras no `ggplot2`, usamos a função `geom_errorbar()`, que adiciona barras de erro representando a variação dos dados.
+
+Para isso, utilizaremos os dados do *data frame* `diamonds`, conjunto de dados do próprio pacote `ggplot2`. 
+
+```{r}
+diamonds
+```
+
+Primeiramente, criaremos um resumo dos dados com média e desvio padrão a partir das funções `group_by()` e `summarise()` (vide @sec-group-summ).
+
+```{r}
+diamonds_resumo <- diamonds |> 
+  dplyr::group_by(cut) |> 
+  dplyr::summarise(
+    media_preco = mean(price),
+    desvio_padrao = sd(price)
+  )
+diamonds_resumo
+```
+
+Com as medidas calculadas, construiremos o gráfico de barras com a função `geom_bar()` e colocar os desvios padrão com a função `geom_errorbar()`.
+
+```{r}
+ggplot(diamonds_resumo, aes(x = cut, y = media_preco)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_errorbar(
+    aes(
+      ymin = media_preco - desvio_padrao,
+      ymax = media_preco + desvio_padrao
+    ), 
+    width = 0.2
+  )
+```
+
+Note que os limites inferior e superior da barra de erro foram construídos a partir da subtração e da soma pela média dos preços de diamantes, respectivamente. Com o argumento `width =` definimos a largura da barra de erro.
+
+## Resumo
+
+Para saber mais sobre os gráficos estatísticos, confira o seguinte material [R Gallery Book](https://bookdown.org/content/b298e479-b1ab-49fa-b83d-a57c2b034d49/).

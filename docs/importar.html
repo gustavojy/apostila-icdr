@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>4&nbsp; Importação – Introdução à Ciência de Dados em R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./arrumar.html" rel="next">
+<link href="./basico.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./importar.html">Preliminares</a></li><li class="breadcrumb-item"><a href="./importar.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Importação</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introdução à Ciência de Dados em R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/gustavojy/icdr" title="Código fonte" class="quarto-navigation-tool px-1" aria-label="Código fonte"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Introdução</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ciencia-dados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ciência de dados</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R / RStudio</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basico.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Noções básicas em R</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Preliminares</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./importar.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Importação</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arrumar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Organização</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Manipulações</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transformar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Transformação</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dplyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Funções essenciais</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dados relacionais</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Visualização</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./visualizar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Gráficos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./esquisse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Gráficos Interativos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./graficos-estatisticos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Estatíticas</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Programação</span></span>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./referencias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referências</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Índice</h2>
+   
+  <ul>
+<li><a href="#introdu%C3%A7%C3%A3o" id="toc-introdução" class="nav-link active" data-scroll-target="#introdu%C3%A7%C3%A3o"><span class="header-section-number">4.1</span> Introdução</a></li>
+  <li><a href="#caminhos" id="toc-caminhos" class="nav-link" data-scroll-target="#caminhos"><span class="header-section-number">4.2</span> Caminhos</a></li>
+  <li>
+<a href="#planilhas-excel" id="toc-planilhas-excel" class="nav-link" data-scroll-target="#planilhas-excel"><span class="header-section-number">4.3</span> Planilhas Excel</a>
+  <ul class="collapse">
+<li><a href="#sec-importar-excel" id="toc-sec-importar-excel" class="nav-link" data-scroll-target="#sec-importar-excel"><span class="header-section-number">4.3.1</span> Importação de planilha Excel</a></li>
+  <li><a href="#importa%C3%A7%C3%A3o-de-diversas-planilhas" id="toc-importação-de-diversas-planilhas" class="nav-link" data-scroll-target="#importa%C3%A7%C3%A3o-de-diversas-planilhas"><span class="header-section-number">4.3.2</span> Importação de diversas planilhas</a></li>
+  <li><a href="#salvar-planilhas-excel" id="toc-salvar-planilhas-excel" class="nav-link" data-scroll-target="#salvar-planilhas-excel"><span class="header-section-number">4.3.3</span> Salvar planilhas Excel</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#arquivos-texto" id="toc-arquivos-texto" class="nav-link" data-scroll-target="#arquivos-texto"><span class="header-section-number">4.4</span> Arquivos texto</a>
+  <ul class="collapse">
+<li><a href="#importa%C3%A7%C3%A3o-de-arquivos-texto" id="toc-importação-de-arquivos-texto" class="nav-link" data-scroll-target="#importa%C3%A7%C3%A3o-de-arquivos-texto"><span class="header-section-number">4.4.1</span> Importação de arquivos texto</a></li>
+  <li><a href="#salvar-arquivos-texto" id="toc-salvar-arquivos-texto" class="nav-link" data-scroll-target="#salvar-arquivos-texto"><span class="header-section-number">4.4.2</span> Salvar arquivos texto</a></li>
+  </ul>
+</li>
+  <li><a href="#atalho-import-dataset" id="toc-atalho-import-dataset" class="nav-link" data-scroll-target="#atalho-import-dataset"><span class="header-section-number">4.5</span> Atalho <em>Import Dataset</em></a></li>
+  <li><a href="#arquivos-.rds" id="toc-arquivos-.rds" class="nav-link" data-scroll-target="#arquivos-.rds"><span class="header-section-number">4.6</span> Arquivos <code>.rds</code></a></li>
+  <li><a href="#bancos-de-dados" id="toc-bancos-de-dados" class="nav-link" data-scroll-target="#bancos-de-dados"><span class="header-section-number">4.7</span> Bancos de dados</a></li>
+  <li><a href="#resumo" id="toc-resumo" class="nav-link" data-scroll-target="#resumo"><span class="header-section-number">4.8</span> Resumo</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/gustavojy/icdr/edit/main/importar.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/gustavojy/icdr/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./importar.html">Preliminares</a></li><li class="breadcrumb-item"><a href="./importar.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Importação</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-importar" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Importação</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="introdução" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="introdução">
+<span class="header-section-number">4.1</span> Introdução</h2>
+<p>Neste capítulo, iniciaremos a primeira etapa para começarmos a aplicar ciência de dados: a <strong>importação</strong> dos dados para o R.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-cd-import" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cd-import-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="imagens/cd-etapas-import.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cd-import-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4.1: A importação de dados é o primeiro passo para começarmos a trabalhar com ciência de dados.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Devemos ter em mente que um conjunto de dados pode estar em diversos formatos, seja em planilhas, arquivos texto ou extensões de outros programas. Assim, para cada formato, haverá uma função específica de importação.</p>
+<p>Como citado na <a href="intro-r.html#sec-proj" class="quarto-xref"><span>Seção 2.2.3</span></a>, utilizar projetos no RStudio facilita a nossa vida para organizar, acessar e importar arquivos para o R. No decorrer deste capítulo, detalharemos sobre este processo a partir de um projeto. Portanto, caso ainda não tenha criado um, confira a seção.</p>
+<p>Ao longo deste capítulo, utilizaremos um mesmo conjunto de dados em diversos formatos para que você possa acompanhar os exemplos a seguir. Para fazer o download dos arquivos <a href="https://github.com/gustavojy/apostila-icdr/raw/refs/heads/main/dados/dados_importar.zip">clique aqui</a>.</p>
+</section><section id="caminhos" class="level2" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="caminhos">
+<span class="header-section-number">4.2</span> Caminhos</h2>
+<p>Antes de importarmos um arquivo para o R, devemos saber onde ele se localiza no computador. Assim, devemos saber qual <strong>caminho</strong> indicar para que as funções de importação possam acessar os arquivos.</p>
+<p>Temos dois tipos de caminhos: o <strong>caminho absoluto</strong> e o <strong>caminho relativo</strong>.</p>
+<p>O caminho absoluto é aquele que tem início na pasta raiz do computador. Para verificá-lo, utilizamos a função <code><a href="https://rdrr.io/r/base/getwd.html">getwd()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] C:/Users/gustavojun/Documents/apostila-icdr</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Como exemplo, este material foi confeccionado no caminho <code>C:/Users/gustavojun/Documents/apostila-icdr</code>, ou seja, o diretório do projeto chamado <code>apostila-icdr</code> está localizado na pasta <code>Documents</code>, referente ao usuário <code>gustavojun</code>.</p>
+<p>Caso você tenha rodado a função <code><a href="https://rdrr.io/r/base/getwd.html">getwd()</a></code>, deve ter percebido que nossos caminhos absolutos são diferentes.</p>
+<p>Por outro lado, o caminho relativo tem como origem o diretório de trabalho do projeto em uso. Dessa forma, não precisamos passar o caminho absoluto para importarmos um arquivo.</p>
+<p>Como exemplo, ilustraremos a diferença entre os dois tipos de caminhos com o arquivo <code>estudantes.xlsx</code> presente na pasta <code>dados</code> do diretório do projeto.</p>
+<ul>
+<li><p>Caminho absoluto: <code>C:/Users/gustavojun/Documents/apostila-icdr/dados/estudantes.xlsx</code>;</p></li>
+<li><p>Caminho relativo: <code>dados/estudantes.xlsx</code>.</p></li>
+</ul>
+<p>Dessa forma, além de facilitar e tornar o código mais legível, o caminho relativo permite um código reprodutível à qualquer pessoa e em qualquer computador, uma vez que o meu caminho absoluto é, muito provavelmente, diferente do seu e de outros usuário.</p>
+<p>Portanto, utilizar projetos no RStudio nos possibilita usar os caminhos relativos - independentemente do caminho absoluto, facilitando a importação de dados e tornando o código reprodutível. Nos exemplos a seguir, utilizaremos apenas os caminhos relativos para importar arquivos.</p>
+</section><section id="planilhas-excel" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="planilhas-excel">
+<span class="header-section-number">4.3</span> Planilhas Excel</h2>
+<p>Em muitos casos, um conjunto de dados está disponível em planilhas Excel, sejam de terceiros ou construídos pelo próprio cientista de dados. Para tanto, o pacote <code>readxl</code> possui funções para trabalhar com este tipo de arquivo.</p>
+<p>O <code>readxl</code> faz parte do <code>tidyverse</code>, portanto, uma vez instalado o pacote <code>tidyverse</code>, precisamos apenas carregá-lo.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="sec-importar-excel" class="level3" data-number="4.3.1"><h3 data-number="4.3.1" class="anchored" data-anchor-id="sec-importar-excel">
+<span class="header-section-number">4.3.1</span> Importação de planilha Excel</h3>
+<p>A principal função do <code>readxl</code> é a <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel()</a></code>, que lê e importa arquivos Excel, seja no formato <code>.xls</code> ou <code>.xlsx</code>, identificando, automaticamente, qual a extensão do arquivo.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estudantes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Dentro da função <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel()</a></code>, informamos no argumento <code>path =</code> o caminho relativo até o arquivo. No exemplo, o arquivo Excel <code>estudantes.xlsx</code> está localizado na pasta <code>dados</code> do diretório do projeto em uso.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estudantes</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   NOME     Sobrenome SEXO      IDADE curso_graduação</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino 23    Biologia       </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino  ?     Agronomia      </span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino 21    Agronomia      </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino  19    Biologia       </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino  24    Agronomia      </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino 25    Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A função <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel()</a></code> importa os dados no formato de <em>tibble</em>, que nada mais é do que uma versão aperfeiçoada dos <em>data frames</em>. No <a href="arrumar.html" class="quarto-xref"><span>Capítulo 5</span></a> veremos mais detalhes sobre as <em>tibbles</em>. Neste momento, considere a <em>tibble</em> uma análoga do <em>data frame</em> tradicional.</p>
+<p>Além disso, nos é informado as dimensões do banco de dados (6 linhas e 5 colunas), o nome das variáveis e as suas respectivas classes.</p>
+<p>Ao analisar a planilha importada, notamos algumas inconsistências nos dados. Para isso, a função <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel()</a></code> apresenta alguns argumentos que nos auxiliam na sua organização prévia à importação. A seguir, listaremos algumas das possíveis funcionalidades.</p>
+<p><strong>1. Nome das variáveis</strong>: o argumento <code>col_names =</code> permite alterar os nomes das variáveis ou, no caso de conjuntos de dados que não possuem variáveis nomeadas, criá-los. Para isso, passamos um vetor com os novos nomes.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span>,</span>
+<span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nome"</span>, <span class="st">"sobrenome"</span>, <span class="st">"sexo"</span>, <span class="st">"idade"</span>, <span class="st">"curso"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 7 × 5</span></span>
+<span><span class="co">#&gt;   nome     sobrenome sexo      idade curso          </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 NOME     Sobrenome SEXO      IDADE curso_graduação</span></span>
+<span><span class="co">#&gt; 2 Ricardo  Silva     Masculino 23    Biologia       </span></span>
+<span><span class="co">#&gt; 3 Maria    Pereira   Feminino  ?     Agronomia      </span></span>
+<span><span class="co">#&gt; 4 Pedro    Costa     Masculino 21    Agronomia      </span></span>
+<span><span class="co">#&gt; 5 Joana    Silva     Feminino  19    Biologia       </span></span>
+<span><span class="co">#&gt; 6 Leticia  Gomes     Feminino  24    Agronomia      </span></span>
+<span><span class="co">#&gt; 7 Jonathan Macedo    Masculino 25    Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Perceba que os nomes foram alterados, porém os antigos permaneceram como observações da primeira linha. Para isso, utilizamos o argumento <code>skip =</code>, que pula linhas do começo da planilha.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span>,</span>
+<span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nome"</span>, <span class="st">"sobrenome"</span>, <span class="st">"sexo"</span>, <span class="st">"idade"</span>, <span class="st">"curso"</span><span class="op">)</span>,</span>
+<span>  skip <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   nome     sobrenome sexo      idade curso    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino 23    Biologia </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino  ?     Agronomia</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino 21    Agronomia</span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino  19    Biologia </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino  24    Agronomia</span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino 25    Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>2. Valores ausentes (NA)</strong>: na variável <code>idade</code>, temos uma observação cuja informação não está disponível, ou seja, um valor <code>NA</code> (<a href="basico.html#sec-especial" class="quarto-xref"><span>Seção 3.9</span></a>). Contudo, essa informação está representada pelo caractere <code>?</code>. A presença deste caractere faz com que a variável <code>idade</code> (de classe numérica) seja classificada como um vetor do tipo caractere (<code>&lt;chr&gt;</code>) devido ao comportamento de coersão (vide <a href="basico.html#sec-vetor" class="quarto-xref"><span>Seção 3.6</span></a>).</p>
+<p>Para substitui-lo, utilizamos o argumento <code>na =</code>, declarando qual caractere desejamos substituir por <code>NA</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span>,</span>
+<span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nome"</span>, <span class="st">"sobrenome"</span>, <span class="st">"sexo"</span>, <span class="st">"idade"</span>, <span class="st">"curso"</span><span class="op">)</span>,</span>
+<span>  skip <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  na <span class="op">=</span> <span class="st">"?"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   nome     sobrenome sexo      idade curso    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino    23 Biologia </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino     NA Agronomia</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino    21 Agronomia</span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino     19 Biologia </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino     24 Agronomia</span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino    25 Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ao substituir o caractere <code>?</code> por <code>NA</code>, a classe da variável <code>"idade"</code> passa a ser numérica (<code>&lt;dbl&gt;</code>) automaticamente.</p>
+<p><strong>3. Classe das variáveis</strong>: também poderíamos resolver a questão anterior trocando a classe da variável. Para isso, utilizamos o argumento <code>col_types =</code>, declarando um vetor com as classes desejadas para todas as variáveis.</p>
+<p>Este argumento nos permite atribuir quatro tipos de classes:</p>
+<ul>
+<li><p><code>"text"</code>: converte para a classe do tipo caractere;</p></li>
+<li><p><code>"numeric"</code>: converte em valores numéricos;</p></li>
+<li><p><code>"date"</code>: converte em datas;</p></li>
+<li><p><code>"skip"</code>: pula colunas, excluindo-as da importação.</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estudantes_modificado</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span>,</span>
+<span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nome"</span>, <span class="st">"sobrenome"</span>, <span class="st">"sexo"</span>, <span class="st">"idade"</span>, <span class="st">"curso"</span><span class="op">)</span>,</span>
+<span>  skip <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  col_types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"text"</span>, <span class="st">"text"</span>, <span class="st">"numeric"</span>, <span class="st">"text"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">estudantes_modificado</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   nome     sobrenome sexo      idade curso    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino    23 Biologia </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino     NA Agronomia</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino    21 Agronomia</span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino     19 Biologia </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino     24 Agronomia</span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino    25 Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ao converter a classe da variável <code>idade</code> para numérica, atribuiu-se o <code>NA</code> para todos os valores não numéricos (no caso, o caractere <code>?</code>).</p>
+<p>Por fim, salvamos as alterações finais no objeto chamado <code>estudantes_modificado</code>.</p>
+<p>O exemplo anterior ilustrou um processo bem comum na rotina de análise de dados. Muitas planilhas as quais nos deparamos apresentam algumas (ou muitas) inconsistências para a importação ao R e, consequentemente, para sua análise.</p>
+<p>O R apresenta ferramentas capazes de lidar com diversos tipos de problemas em importação dos dados. Para isso, temos que identificar os problemas e fazer os ajustes necessários até chegar na formatação de dados ideal para analisá-los. No <a href="arrumar.html" class="quarto-xref"><span>Capítulo 5</span></a> abordaremos com mais detalhes a lógica da organização de dados, além de ferramentas complementares às apresentadas até agora.</p>
+</section><section id="importação-de-diversas-planilhas" class="level3" data-number="4.3.2"><h3 data-number="4.3.2" class="anchored" data-anchor-id="importação-de-diversas-planilhas">
+<span class="header-section-number">4.3.2</span> Importação de diversas planilhas</h3>
+<p>Em alguns casos, um arquivo Excel pode conter diversas planilhas. Para verificar quais planilhas estão presentes, utilizamos a função <code><a href="https://readxl.tidyverse.org/reference/excel_sheets.html">excel_sheets()</a></code>, também do pacote <code>readxl</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/excel_sheets.html">excel_sheets</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Geral"     "Notas"     "Resultado"</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O mesmo arquivo utilizado anteriormente (<code>estudantes.xlsx</code>) apresenta três planilhas: <code>"Geral"</code>, <code>"Notas"</code> e <code>"Resultado"</code>.</p>
+<p>Por padrão, a função importa a primeira planilha presente no arquivo. Dessa forma, nos exemplos anteriores, trabalhamos com a planilha <code>"Geral"</code>.</p>
+<p>Para selecionar as demais planilhas, devemos utilizar o argumento <code>sheet =</code> dentro da função <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel()</a></code> e informar seu nome entre aspas.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span>, sheet <span class="op">=</span> <span class="st">"Geral"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   NOME     Sobrenome SEXO      IDADE curso_graduação</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino 23    Biologia       </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino  ?     Agronomia      </span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino 21    Agronomia      </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino  19    Biologia       </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino  24    Agronomia      </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino 25    Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span>, sheet <span class="op">=</span> <span class="st">"Notas"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   nome     sobrenome prova1 prova2</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva        8      7  </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira      2      7.5</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa        7.8    7  </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva        6      6.7</span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes        9.5   10  </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo       9      8</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span>, sheet <span class="op">=</span> <span class="st">"Resultado"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 12 × 4</span></span>
+<span><span class="co">#&gt;    `Resultado final da disciplina estatística geral`      ...2      ...3   ...4 </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;                                                  &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;  1 &lt;NA&gt;                                                   &lt;NA&gt;      &lt;NA&gt;   &lt;NA&gt; </span></span>
+<span><span class="co">#&gt;  2 nome                                                   sobrenome nota_… resu…</span></span>
+<span><span class="co">#&gt;  3 Ricardo                                                Silva     7.5    Apro…</span></span>
+<span><span class="co">#&gt;  4 Maria                                                  Pereira   4.75   Recu…</span></span>
+<span><span class="co">#&gt;  5 Pedro                                                  Costa     7.4    Apro…</span></span>
+<span><span class="co">#&gt;  6 Joana                                                  Silva     6.35   Apro…</span></span>
+<span><span class="co">#&gt;  7 Leticia                                                Gomes     9.75   Apro…</span></span>
+<span><span class="co">#&gt;  8 Jonathan                                               Macedo    8.5    Apro…</span></span>
+<span><span class="co">#&gt;  9 &lt;NA&gt;                                                   &lt;NA&gt;      &lt;NA&gt;   &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 10 Observação:                                            &lt;NA&gt;      &lt;NA&gt;   &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 11 O resultado final é a média aritmética das duas provas &lt;NA&gt;      &lt;NA&gt;   &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 12 Alunos com média inferior a 5 ficam de recuperação     &lt;NA&gt;      &lt;NA&gt;   &lt;NA&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Você deve ter notado que a planilha <code>"Resultado"</code> foi importada de maneira estranha. Isso se deve a um caso de formatação de incorreta dos dados. Vamos analisar como esta planilha se apresenta no Excel.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="imagens/import-excel-args.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A planilha <code>"Resultado"</code> apresenta comentários que não fazem parte do conjunto de dados, o que interferiu no momento em que a importamos para o R.</p>
+<p>Para contornar este problema, podemos utilizar os argumentos <code>skip =</code> para pular linhas do começo da planilha e o <code>n_max =</code>, para selecionar o número máximo de linhas.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span>, sheet <span class="op">=</span> <span class="st">"Resultado"</span>,</span>
+<span>  skip <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>  n_max <span class="op">=</span> <span class="fl">7</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   nome     sobrenome nota_final resultado  </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva           7.5  Aprovado   </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira         4.75 Recuperação</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa           7.4  Aprovado   </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva           6.35 Aprovado   </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes           9.75 Aprovado   </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo          8.5  Aprovado</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Primeiramente, com o argumento <code>skip = 2</code>, pulamos as duas primeiras linhas da planilha. Em seguida, agora sem contar as duas linhas puladas, selecionamos as primeiras sete linhas com o <code>n_max = 7</code>.</p>
+<p>Também podemos utilizar o argumento <code>range =</code> para selecionar um intervalo de células do Excel.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estudantes_resultado</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span>, sheet <span class="op">=</span> <span class="st">"Resultado"</span>,</span>
+<span>  range <span class="op">=</span> <span class="st">"A3:D9"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">estudantes_resultado</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   nome     sobrenome nota_final resultado  </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva           7.5  Aprovado   </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira         4.75 Recuperação</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa           7.4  Aprovado   </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva           6.35 Aprovado   </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes           9.75 Aprovado   </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo          8.5  Aprovado</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Por fim, guardamos as alterações finais da planilha <code>"Resultado"</code> no objeto chamado <code>estudantes_resultado</code>.</p>
+<p>Ao analisar as três planilhas, nota-se que poderíamos juntá-las em uma única, pois apresentam informações que se relacionam entre si. No <span class="quarto-unresolved-ref">?sec-join</span>, veremos como juntá-las em um único <em>data frame</em>.</p>
+</section><section id="salvar-planilhas-excel" class="level3" data-number="4.3.3"><h3 data-number="4.3.3" class="anchored" data-anchor-id="salvar-planilhas-excel">
+<span class="header-section-number">4.3.3</span> Salvar planilhas Excel</h3>
+<p>Após importar e ajustar os dados no R, podemos salvar as alterações em um novo arquivo Excel no formato <code>.xlsx</code>. Para isso, utilizamos o pacote <code>openxlsx</code>.</p>
+<p>Este pacote não faz parte do <code>tidyverse</code>, portanto, antes de carregar, precisamos instalá-lo.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"openxlsx"</span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ycphs.github.io/openxlsx/index.html">openxlsx</a></span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para salvar os dados em um arquivo Excel, utilizamos a função <code><a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html">write.xlsx()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html">write.xlsx</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">estudantes_resultado</span>, file <span class="op">=</span> <span class="st">"dados/estudantes_resultado.xlsx"</span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No argumento <code>x =</code> declaramos o nome do objeto que desejamos salvar e no <code>file =</code>, o caminho onde se deseja criar o arquivo e seu nome.</p>
+<p>No exemplo, salvamos o objeto <code>estudantes_resultado</code> no arquivo chamado <code>estudantes_resultado.xlsx</code>, criado na pasta <code>dados</code> do diretório do projeto.</p>
+<p>Para salvar mais de um objeto em diferentes planilhas de um mesmo arquivo Excel, criamos uma lista (<code><a href="https://rdrr.io/r/base/list.html">list()</a></code>) com os nomes das planilhas, indicando com o operador <code>=</code> qual objeto desejamos salvar.</p>
+<p>No exemplo a seguir, criaremos um novo arquivo com as planilhas corrigidas anteriormente. Apenas a planilha <code>"Notas"</code> não precisou de alterações, bastando importar e salvá-la em um objeto para podermos criarmos o novo arquivo.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estudantes_notas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"dados/estudantes.xlsx"</span>, sheet <span class="op">=</span> <span class="st">"Notas"</span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">planilhas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Geral"</span> <span class="op">=</span> <span class="va">estudantes_modificado</span>, </span>
+<span>  <span class="st">"Notas"</span> <span class="op">=</span> <span class="va">estudantes_notas</span>,</span>
+<span>  <span class="st">"Resultado"</span> <span class="op">=</span> <span class="va">estudantes_resultado</span></span>
+<span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html">write.xlsx</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">planilhas</span>, file <span class="op">=</span> <span class="st">"dados/estudantes_corrigido.xlsx"</span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Dessa forma, salvamos os objetos <code>estudantes_modificado</code>, <code>estudantes_notas</code> e <code>estudantes_resultado</code> em um novo arquivo chamado <code>estudantes_corrigido.xlsx</code>, mantendo os nomes originais das planilhas, <code>"Geral"</code>, <code>"Notas"</code> e <code>"Resultado"</code>.</p>
+<p>Vale destacar que nunca devemos sobrescrever (substituir) o arquivo ou as planilhas originais pelos novos, pois podemos perder informações importantes, além de impossibilitar a reprodutibilidade do código, caso seja preciso realizar outras modificações a partir do arquivo original. Dessa forma, sempre crie um novo arquivo e com outro nome.</p>
+<p>Para ver o resultado final das planilhas com as correções, podemos verificar no próprio arquivo Excel <code>estudantes_corrigido.xlsx</code> ou importá-las para o R.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"dados/estudantes_corrigido.xlsx"</span>, sheet <span class="op">=</span> <span class="st">"Geral"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   nome     sobrenome sexo      idade curso    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino    23 Biologia </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino     NA Agronomia</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino    21 Agronomia</span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino     19 Biologia </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino     24 Agronomia</span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino    25 Biologia</span></span>
+<span></span>
+<span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"dados/estudantes_corrigido.xlsx"</span>, sheet <span class="op">=</span> <span class="st">"Notas"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   nome     sobrenome prova1 prova2</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva        8      7  </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira      2      7.5</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa        7.8    7  </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva        6      6.7</span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes        9.5   10  </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo       9      8</span></span>
+<span></span>
+<span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"dados/estudantes_corrigido.xlsx"</span>, sheet <span class="op">=</span> <span class="st">"Resultado"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   nome     sobrenome nota_final resultado  </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva           7.5  Aprovado   </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira         4.75 Recuperação</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa           7.4  Aprovado   </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva           6.35 Aprovado   </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes           9.75 Aprovado   </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo          8.5  Aprovado</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Nesta seção, trabalhamos com planilhas Excel alocadas em nosso computador. Contudo, vale destacar que também é possível importar planilhas <em>online</em> diretamente do R. O pacote <code>googlesheets4</code>, que faz parte do <code>tidyverse</code>, permite acessar as planilhas do Google Sheets. Você pode conhecer mais sobre este pacote acessando sua documentação em <a href="https://googlesheets4.tidyverse.org/" class="uri">https://googlesheets4.tidyverse.org/</a>.</p>
+</section></section><section id="arquivos-texto" class="level2" data-number="4.4"><h2 data-number="4.4" class="anchored" data-anchor-id="arquivos-texto">
+<span class="header-section-number">4.4</span> Arquivos texto</h2>
+<p>Os arquivos texto são aqueles em que as variáveis das observações são separadas por algum delimitador. Comumente, possuem extensão nos formatos <code>.csv</code> ou <code>.txt</code>.</p>
+<p>O delimitador pode ser qualquer operador, como vírgulas, ponto-e-vírgulas, espaços, tabulação (<em>Tab</em>) ou um operador genérico.</p>
+<p>De acordo com o delimitador, utilizaremos uma função ou argumentos específicos para importar este tipo de arquivo. Para isso, o pacote <code>readr</code>, que também faz parte do <code>tidyverse</code>, traz as principais ferramentas necessárias.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="importação-de-arquivos-texto" class="level3" data-number="4.4.1"><h3 data-number="4.4.1" class="anchored" data-anchor-id="importação-de-arquivos-texto">
+<span class="header-section-number">4.4.1</span> Importação de arquivos texto</h3>
+<p>As funções de importação de arquivos texto a partir do <code>readr</code> possuem a sintaxe <code>read_()</code>. A <a href="#tbl-arquivo-texto" class="quarto-xref">Tabela&nbsp;<span>4.1</span></a> traz as principais funções de acordo com o delimitador, operador do delimitador e formato do arquivo.</p>
+<div id="tbl-arquivo-texto" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-arquivo-texto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;4.1: Principais funções de importação de arquivos texto do pacote <code>readr</code>.
+</figcaption><div aria-describedby="tbl-arquivo-texto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead><tr class="header">
+<th style="text-align: center;">Função</th>
+<th style="text-align: center;">Delimitador</th>
+<th style="text-align: center;">Operador</th>
+<th style="text-align: center;">Arquivo</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv()</a></code></td>
+<td style="text-align: center;">Vírgula</td>
+<td style="text-align: center;"><code>","</code></td>
+<td style="text-align: center;"><code>.csv</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv2()</a></code></td>
+<td style="text-align: center;">Ponto-e-vírgula</td>
+<td style="text-align: center;"><code>";"</code></td>
+<td style="text-align: center;"><code>.csv</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv()</a></code></td>
+<td style="text-align: center;">Tabulação</td>
+<td style="text-align: center;"><code>"\t"</code></td>
+<td style="text-align: center;">
+<code>.txt</code> e <code>.csv</code>
+</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_delim()</a></code></td>
+<td style="text-align: center;">Delimitador genérico</td>
+<td style="text-align: center;"><code>delim =</code></td>
+<td style="text-align: center;">
+<code>.txt</code> e <code>.csv</code>
+</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code><a href="https://readr.tidyverse.org/reference/read_table.html">read_table()</a></code></td>
+<td style="text-align: center;">Espaço</td>
+<td style="text-align: center;"><code>" "</code></td>
+<td style="text-align: center;">
+<code>.txt</code> e <code>.csv</code>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>No caso da função <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_delim()</a></code>, devemos utilizar o argumento <code>delim =</code> para indicar qual caractere é o delimitador.</p>
+<p>Como exemplo, importaremos um arquivo <code>.csv</code> (<code>estudantes.csv</code>), utilizando a função <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv()</a></code>, cujo delimitador é a vírgula.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="imagens/import-csv.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/estudantes.csv"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   NOME     Sobrenome SEXO      IDADE curso_graduação</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino 23    Biologia       </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino  ?     Agronomia      </span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino 21    Agronomia      </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino  19    Biologia       </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino  24    Agronomia      </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino 25    Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Dentro da função <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv()</a></code>, declaramos o argumento <code>file =</code> com o caminho relativo até o arquivo (análogo ao <code>path =</code> da função <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">readxl::read_excel()</a></code>). Novamente, os dados são importados como <em>tibbles</em> (<a href="arrumar.html" class="quarto-xref"><span>Capítulo 5</span></a>).</p>
+<p>Além disso, nos é informado as dimensões do conjunto de dados (6 linhas e 5 colunas), o nome das variáveis e as suas respectivas classes.</p>
+<p>Caso seu arquivo <code>.csv</code> seja delimitado por ponto-e-vírgula, basta proceder da mesma maneira, porém utilizando a função <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv2()</a></code>.</p>
+<p>No caso de arquivos <code>.txt</code>, utilizamos a função <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_delim()</a></code>, sendo necessário indicar qual caractere é utilizado como delimitador.</p>
+<p>No exemplo a seguir, importaremos um arquivo <code>.txt</code>, separado por tabulação. Para isso, com o argumento <code>delim =</code>, informamos qual o delimitador a ser considerado (no caso, o <code>"\t"</code> para a tabulação).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="imagens/import-txt.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_delim</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/estudantes.txt"</span>, delim <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   NOME     Sobrenome SEXO      IDADE curso_graduação</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino 23    Biologia       </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino  ?     Agronomia      </span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino 21    Agronomia      </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino  19    Biologia       </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino  24    Agronomia      </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino 25    Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Também podemos importar o arquivo anterior a partir da função <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv()</a></code>, uma vez que o delimitador é a tabulação. Assim, não precisamos utilizar o argumento <code>delim =</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/estudantes.txt"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   NOME     Sobrenome SEXO      IDADE curso_graduação</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino 23    Biologia       </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino  ?     Agronomia      </span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino 21    Agronomia      </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino  19    Biologia       </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino  24    Agronomia      </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino 25    Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>De maneira geral, as funções de importação de arquivos texto funcionam da mesma forma, alterando apenas o nome da função, o delimitador e o tipo de arquivo a ser considerado.</p>
+<p>As funções do pacote <code>readr</code> também apresentam argumentos específicos para organizar os dados antes de serem importados, muitos deles idênticos aos do pacote <code>readxl</code> (<a href="#sec-importar-excel" class="quarto-xref"><span>Seção 4.3.1</span></a>). A seguir, ilustraremos tais argumentos com a função <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span></span>
+<span>  file <span class="op">=</span> <span class="st">"dados/estudantes.csv"</span>,</span>
+<span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nome"</span>, <span class="st">"sobrenome"</span>, <span class="st">"sexo"</span>, <span class="st">"idade"</span>, <span class="st">"curso"</span><span class="op">)</span>,</span>
+<span>  skip <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  na <span class="op">=</span> <span class="st">"?"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   nome     sobrenome sexo      idade curso    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino    23 Biologia </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino     NA Agronomia</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino    21 Agronomia</span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino     19 Biologia </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino     24 Agronomia</span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino    25 Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Contudo, há uma diferença significativa no argumento que altera a classe das colunas. O pacote <code>readr</code> adota uma estrutura mais flexível para o <code>col_types =</code>, permitindo especificar apenas as colunas cuja classe desejamos modificar. Na <a href="#sec-importar-excel" class="quarto-xref"><span>Seção 4.3.1</span></a>, ao utilizar a função <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">readxl::read_excel()</a></code>, era necessário declarar um vetor ordenado com as classes de todas as variáveis, inclusive daquelas que não precisavam de alteração. Isso pode ser inconveniente em conjuntos de dados com muitas variáveis, mas poucas que requerem modificação.</p>
+<p>Para isso, em <code>col_types = cols()</code> indicamos o nome da variável a ser alterada, seguida do operador <code>=</code> e a classe a ser atribuída (<code>nome_variável = col_()</code>).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span></span>
+<span>  file <span class="op">=</span> <span class="st">"dados/estudantes.csv"</span>,</span>
+<span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nome"</span>, <span class="st">"sobrenome"</span>, <span class="st">"sexo"</span>, <span class="st">"idade"</span>, <span class="st">"curso"</span><span class="op">)</span>,</span>
+<span>  skip <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  col_types <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/cols.html">cols</a></span><span class="op">(</span>idade <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html">col_double</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   nome     sobrenome sexo      idade curso    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino    23 Biologia </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino     NA Agronomia</span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino    21 Agronomia</span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino     19 Biologia </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino     24 Agronomia</span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino    25 Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Como classes disponíveis, temos uma maior variedade neste pacote:</p>
+<ul>
+<li><p><code><a href="https://readr.tidyverse.org/reference/parse_atomic.html">col_integer()</a></code> e <code><a href="https://readr.tidyverse.org/reference/parse_atomic.html">col_double()</a></code> converte em valores numéricos inteiros e reais, respectivamente;</p></li>
+<li><p><code><a href="https://readr.tidyverse.org/reference/parse_atomic.html">col_character()</a></code> converte para a classe do tipo caractere;</p></li>
+<li><p><code><a href="https://readr.tidyverse.org/reference/parse_atomic.html">col_logical()</a></code> converte em valores lógicos;</p></li>
+<li><p><code><a href="https://readr.tidyverse.org/reference/parse_factor.html">col_factor()</a></code> converte para a classe do tipo fator;</p></li>
+<li><p><code><a href="https://readr.tidyverse.org/reference/parse_datetime.html">col_date()</a></code> <code><a href="https://readr.tidyverse.org/reference/parse_datetime.html">col_time()</a></code> e <code><a href="https://readr.tidyverse.org/reference/parse_datetime.html">col_datetime()</a></code> converte em datas, tempo e datas-tempo, respectivamente;</p></li>
+<li><p><code><a href="https://readr.tidyverse.org/reference/col_skip.html">col_skip()</a></code> pula colunas, excluindo-as da importação.</p></li>
+</ul></section><section id="salvar-arquivos-texto" class="level3" data-number="4.4.2"><h3 data-number="4.4.2" class="anchored" data-anchor-id="salvar-arquivos-texto">
+<span class="header-section-number">4.4.2</span> Salvar arquivos texto</h3>
+<p>Para salvar dados do R em arquivos texto, utilizamos um conjunto de funções <code>write_()</code> do pacote <code>readr</code>. A <a href="#tbl-arquivo-texto-write" class="quarto-xref">Tabela&nbsp;<span>4.2</span></a> traz estas funções, junto às especificações.</p>
+<div id="tbl-arquivo-texto-write" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-arquivo-texto-write-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;4.2: Principais funções <code>write_()</code> do pacote <code>readr</code>.
+</figcaption><div aria-describedby="tbl-arquivo-texto-write-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 27%">
+<col style="width: 24%">
+<col style="width: 24%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: center;">Função</th>
+<th style="text-align: center;">Argumentos</th>
+<th style="text-align: center;">Delimitador</th>
+<th style="text-align: center;">Arquivo</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv()</a></code></td>
+<td style="text-align: center;">
+<code>x =</code> , <code>file =</code>
+</td>
+<td style="text-align: center;">Vírgula</td>
+<td style="text-align: center;"><code>.csv</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv2()</a></code></td>
+<td style="text-align: center;">
+<code>x =</code> , <code>file =</code>
+</td>
+<td style="text-align: center;">Ponto-e-vírgula</td>
+<td style="text-align: center;"><code>.csv</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code><a href="https://readr.tidyverse.org/reference/write_delim.html">write_delim()</a></code></td>
+<td style="text-align: center;">
+<code>x =</code> , <code>file =</code> , <code>delim =</code>
+</td>
+<td style="text-align: center;">Diversos</td>
+<td style="text-align: center;">
+<code>.txt</code> e <code>.csv</code>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Estas funções são compostas pelos argumentos <code>x =</code> e <code>file =</code>, referentes ao objeto a ser salvo e ao caminho onde se deseja criar o arquivo, respectivamente. Com a função <code><a href="https://readr.tidyverse.org/reference/write_delim.html">write_delim()</a></code>, devemos especificar no argumento <code>delim =</code> qual o delimitador a ser considerado.</p>
+<p>Nos exemplos a seguir, salvaremos dados nos formatos <code>.csv</code> e <code>.txt</code>. Utilizaremos um conjunto de dados nativo do R, o <code>mtcars</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                    mpg cyl disp  hp drat    wt  qsec vs am gear carb</span></span>
+<span><span class="co">#&gt; Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4</span></span>
+<span><span class="co">#&gt; Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4</span></span>
+<span><span class="co">#&gt; Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1</span></span>
+<span><span class="co">#&gt; Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1</span></span>
+<span><span class="co">#&gt; Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2</span></span>
+<span><span class="co">#&gt; Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Arquivo .csv separado por vírgula</span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span>, file <span class="op">=</span> <span class="st">"dados/mtcars.csv"</span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Arquivo .csv separado por ponto-e-vírgula</span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv2</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span>, file <span class="op">=</span> <span class="st">"dados/mtcars.csv"</span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Arquivo .txt, separado por tabulação</span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_delim</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span>, file <span class="op">=</span> <span class="st">"dados/mtcars.txt"</span>, delim <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="atalho-import-dataset" class="level2" data-number="4.5"><h2 data-number="4.5" class="anchored" data-anchor-id="atalho-import-dataset">
+<span class="header-section-number">4.5</span> Atalho <em>Import Dataset</em>
+</h2>
+<p>O RStudio traz um atalho muito útil para importarmos dados ao R. Trata-se do <em>Import Dataset</em>, presente na janela <em>Environment</em>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-imp-dataset1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-imp-dataset1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="imagens/import-dataset1.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-imp-dataset1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4.2: Com o atalho Import Dataset, podemos realizar a importação de dados de diversas extensões, de forma intuitiva e prática.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>O <em>Import Dataset</em> nos permite importar arquivos de diversas extensões, como ilustra a <a href="#fig-imp-dataset1" class="quarto-xref">Figura&nbsp;<span>4.2</span></a>. A seguir, listaremos as opções.</p>
+<ul>
+<li><p><code>From Text (base)</code> e <code>From Text (readr)</code> realizam a importação de arquivos texto. A primeira utiliza as funções base do R, enquanto a outra, as do pacote <code>readr</code>;</p></li>
+<li><p><code>From Excel</code> importa planilhas Excel nos formatos <code>.xls</code> ou <code>.xlsx</code>, utilizando o pacote <code>readxl</code>;</p></li>
+<li><p><code>From SPSS</code>, <code>From SAS</code> e <code>From Stata</code> realizam a importação de arquivos dos programas SPSS, SAS e Stata, utilizando o pacote <code>haven</code> que também faz parte do <code>tidyverse</code>. Neste material, não entraremos em detalhes sobre estes tipos de arquivos, porém, destaca-se que a sintaxe de funções é praticamente a mesma do demonstrado neste material. Mais informações sobre o pacote <code>haven</code> estão disponíveis em <a href="https://haven.tidyverse.org/" class="uri">https://haven.tidyverse.org/</a>.</p></li>
+</ul>
+<p>Ao selecionar uma das opções, será aberta uma nova janela onde podemos colocar diversas especificações. Exemplificaremos com a importação de arquivo Excel.</p>
+<p>Primeiramente, clicando em <em>Browse…</em>, devemos selecionar o arquivo a ser importado.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="imagens/import-dataset2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Selecionado o arquivo, são apresentadas prévias dos dados e do código de importação.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="imagens/import-dataset3.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Também podemos realizar algumas alterações nos dados antes de importá-los. A janela <em>Import Options</em> traz os possíveis argumentos da função de importação. Além disso, clicando no nome das variáveis, podemos alterar as suas respectivas classes. Ao realizar as alterações, perceba que a prévia do código também é atualizada.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="imagens/import-dataset4.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Para importar os dados, clicamos em <em>Import</em>. Também podemos copiar o código clicando no ícone do canto superior direito em <em>Code Preview</em> e colocá-lo no <em>script</em>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="imagens/import-dataset5.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Utilizar o atalho <em>Import Dataset</em> facilita a tarefa de importação de dados, pois é uma ferramenta visual que nos traz as prévias das ações realizadas antes de importarmos os dados.</p>
+<p>Os conceitos vistos ao longo do capítulo são importantes para conhecermos as opções de argumentos, ter noção sobre as diferenças entre os tipos de arquivos, além de compreender toda a lógica envolvida. Dessa maneira, o <em>Import Dataset</em> se apresenta como um facilitador do aprendizado de importação de dados para o R.</p>
+</section><section id="arquivos-.rds" class="level2" data-number="4.6"><h2 data-number="4.6" class="anchored" data-anchor-id="arquivos-.rds">
+<span class="header-section-number">4.6</span> Arquivos <code>.rds</code>
+</h2>
+<p>O R possui uma extensão própria de arquivo para armazenar qualquer tipo de objeto do R. Trata-se dos arquivos <code>.rds</code> ou <code>.RDS</code>.</p>
+<p>Para salvar um objeto no formato <code>.rds</code>, utilizamos a função <code><a href="https://readr.tidyverse.org/reference/read_rds.html">write_rds()</a></code> do pacote <code>readr</code>. Como exemplo, salvaremos o arquivo <code>estudantes.csv</code> neste formato.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estudantes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/estudantes.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">write_rds</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">estudantes</span>, file <span class="op">=</span> <span class="st">"dados/estudantes.rds"</span>, compress <span class="op">=</span> <span class="st">"gz"</span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para importar o novo arquivo criado, utilizamos a função <code><a href="https://readr.tidyverse.org/reference/read_rds.html">read_rds()</a></code>, também do pacote <code>readr</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">read_rds</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/estudantes.rds"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   NOME     Sobrenome SEXO      IDADE curso_graduação</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 Ricardo  Silva     Masculino 23    Biologia       </span></span>
+<span><span class="co">#&gt; 2 Maria    Pereira   Feminino  ?     Agronomia      </span></span>
+<span><span class="co">#&gt; 3 Pedro    Costa     Masculino 21    Agronomia      </span></span>
+<span><span class="co">#&gt; 4 Joana    Silva     Feminino  19    Biologia       </span></span>
+<span><span class="co">#&gt; 5 Leticia  Gomes     Feminino  24    Agronomia      </span></span>
+<span><span class="co">#&gt; 6 Jonathan Macedo    Masculino 25    Biologia</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A vantagem de utilizar a extensão <code>.rds</code> é a possibilidade de compactar o arquivo e deixá-lo mais “leve” (ocupa menor espaço de armazenamento), o que torna a importação dos dados mais rápida, principalmente quando utilizamos arquivos grandes. Realizamos a compactação com o argumento <code>compress =</code> na função <code><a href="https://readr.tidyverse.org/reference/read_rds.html">write_rds()</a></code>.</p>
+<p>Além disso, por se tratar de um arquivo próprio do R, é totalmente compatível com qualquer ação realizada dentro do software, preservando a estrutura dos dados quando importamos.</p>
+<p>Em alguns casos, quando salvamos um objeto em um arquivo texto ou Excel, podem ocorrer algumas alterações quando os importamos de volta, como alterar a classe especificada para as colunas. Salvar em um arquivo <code>.rds</code> evita este tipo de problema.</p>
+<p>Contudo, só podemos utilizar este tipo de arquivo no R. Caso queira utilizar dados construídos no R em outro programa, devemos utilizar outra extensão de arquivo, como os arquivos <a href="https://arrow.apache.org/docs/r/reference/read_parquet.html"><code>.parquet</code></a> do pacote <code>arrow</code>.</p>
+</section><section id="bancos-de-dados" class="level2" data-number="4.7"><h2 data-number="4.7" class="anchored" data-anchor-id="bancos-de-dados">
+<span class="header-section-number">4.7</span> Bancos de dados</h2>
+<p>A seguir, listaremos alguns sites que fornecem uma grande variedade de base de dados públicas. Confira alguma que apresente dados de seu interesse para que possa aplicar, futuramente, os conceitos aprendidos neste material.</p>
+<ul>
+<li><p>FAOSTAT: <a href="https://www.fao.org/faostat/en/#data" class="uri">https://www.fao.org/faostat/en/#data</a>;</p></li>
+<li><p>IBGE: <a href="https://sidra.ibge.gov.br/home/" class="uri">https://sidra.ibge.gov.br/home/</a>;</p></li>
+<li><p>DataBank: <a href="https://databank.worldbank.org/databases" class="uri">https://databank.worldbank.org/databases</a>;</p></li>
+<li><p>Kaggle: <a href="https://www.kaggle.com/datasets" class="uri">https://www.kaggle.com/datasets</a>;</p></li>
+<li><p>Dados do Agro: <a href="https://dados.agr.br/fonte-de-dados/" class="uri">https://dados.agr.br/fonte-de-dados/</a>.</p></li>
+</ul></section><section id="resumo" class="level2" data-number="4.8"><h2 data-number="4.8" class="anchored" data-anchor-id="resumo">
+<span class="header-section-number">4.8</span> Resumo</h2>
+<p>Como visto, a importação de dados para o R não é uma tarefa difícil. Devemos nos atentar ao formato do arquivo, a fim de utilizar a função de importação correta. Em alguns casos, nos depararemos com arquivos cuja configuração de dados é incompatível com a importação ao R. Para isso, as funções de importação apresentam argumentos que reparam a maioria dos problemas. Por fim, também vimos funções que salvam os dados do R para diversos formatos de arquivos.</p>
+<p>No próximo capítulo, trataremos sobre a etapa de <strong>organizar</strong>. Apresentaremos as <em>tibbles</em>, um tipo especial de <em>data frame</em>, além de explorarmos as funcionalidades presentes no pacote <code>tidyr</code>, a fim de obtermos uma base de dados organizada e fácil de se trabalhar.</p>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/gustavojy\.github\.io\/apostila-icdr\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./basico.html" class="pagination-link" aria-label="Noções básicas em R">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Noções básicas em R</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./arrumar.html" class="pagination-link" aria-label="Organização">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Organização</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Introdução à Ciência de Dados em R. 2ª Edição, 2025.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gustavojy/icdr/edit/main/importar.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/gustavojy/icdr/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Este material foi confeccionado com <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

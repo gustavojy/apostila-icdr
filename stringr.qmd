@@ -1,0 +1,19 @@
+# Textos {#sec-stringr}
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+source("_options.R")
+```
+
+
+
+Para mudar os nomes de valores categóricos.
+
+```{r}
+graos_selecionado |> 
+  case_when()
+```
+

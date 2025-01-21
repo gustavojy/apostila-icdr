@@ -1,0 +1,469 @@
+# Funções essenciais {#sec-dplyr}
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+source("_options.R")
+```
+
+## Introdução
+
+Neste capítulo, exploraremos as principais funções de manipulação de dados disponíveis no pacote `dplyr`.
+
+O `dplyr` é um dos principais pacotes do `tidyverse`. Ele oferece um conjunto de ferramentas intuitivas e robustas para a manipulação de dados de forma eficiente. A seguir, apresentaremos as principais funções do pacote, que nos permitem resolver a maioria dos problemas relacionados à etapa de transformação dos dados.
+
+```{r}
+library(dplyr)
+```
+
+Para os exemplos, utilizaremos um conjunto de dados da [FAOSTAT](https://www.fao.org/faostat/en/#data). Os dados estão disponíveis para download [clicando aqui](<https://github.com/gustavojy/apostila-icdr/raw/refs/heads/main/dados/dados-transformar.zip>).
+
+Mas antes de adentrar ao pacote `dplyr`, vamos conhecer o operador *pipe*.
+
+## Operador *pipe* {#sec-pipe}
+
+Na maioria dos casos, utilizaremos mais de uma função para manipular os nossos dados. Com isso, entra em cena o *pipe*, cujo operador é `|>`.
+
+A principal função do *pipe* é conectar linhas de códigos que se relacionam, executando-as em sequência e de uma só vez. Essa estrutura de código é chamada de *pipeline*.
+
+Para ilustrá-lo, faremos uma mesma operação com e sem o *pipe*, calculando a média final das notas de um aluno, arredondada em uma casa decimal.
+
+```{r}
+notas <- c(8.88, 6.84, 7.51)
+
+# Sem o pipe
+round(mean(notas), 1)
+
+# Com o pipe
+notas |> mean() |> round(1)
+```
+
+Com o *pipe*, colocamos as funções de acordo com a ordem em que desejamos realizar as operações. No exemplo, primeiro declaramos o objeto que contém os valores a serem utilizados. Em seguida, calculamos a média das notas. E por fim, arrendondamos em uma casa decimal o valor obtido no cálculo da média.
+
+Dessa maneira, ao utilizar o *pipe*, evitamos de escrever funções dentro de funções, obtendo um código mais legível, claro e compacto, principalmente quando trabalhamos com diversas funções. Além disso, facilita a manutenção do código, caso seja preciso realizar alterações ou consertar possíveis problemas.
+
+Podemos utilizar o atalho do teclado `Ctrl + Shift + M` (`Cmd + Shift + M`) para adicionar o *pipe* ao código. Para isso, devemos ativá-lo clicando na aba `Tools` do menu superior, seguido de `Global Options...`. Ao abrir a janela, em `Code`, habilite a opção indicada na @fig-pipe.
+
+```{r}
+#| label: fig-pipe
+#| echo: false
+#| out-width: NULL
+#| fig-cap: |
+#|    Para inserir o pipe a partir do atalho, habilite a opção 
+#|    "Use native pipe operator".
+
+knitr::include_graphics("imagens/pipe.png")
+```
+
+Os usuários mais antigos do R devem se lembrar que utilizávamos o operador `%>%` para o *pipe*. Este operador está presente no pacote `magrittr`, outro componente do `tidyverse`.
+
+Apesar de ambos os operadores atuarem de modo semelhante para os casos mais simples, o `|>` funciona sem carregar o `tidyverse`, pois faz parte do pacote base do R, tornando-o mais simples e independente de qualquer pacote. Esta é a principal vantagem desse operador em relação ao do pacote `magrittr`.
+
+Para entender mais sobre as mudanças entre os operadores, recomendo o seguinte texto: <https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/>.
+
+## Colunas
+
+Existem quatro principais funções relacionadas a manipulação de colunas (ou variáveis): `select()`, `rename()`, `relocate()` e `mutate()`. A seguir, trataremos de cada uma delas.
+
+### Selecionar
+
+A primeira função que apresentaremos é a `select()`, que seleciona as variáveis de um *data frame*. Primeiramente, vamos importar e analisar os dados do arquivo `prod_graos.csv`.
+
+```{r}
+graos <- readr::read_csv("dados/prod-graos.csv")
+graos
+
+glimpse(graos)
+```
+
+O conjunto de dados traz a produção e área colhida de milho, soja, trigo e arroz nos países da América do Sul entre 1961 e 2019. Com a função `glimpse()`, constatamos que o *data frame* apresenta 2.842 observações e 12 variáveis. Como podemos observar, muitas das variáveis são códigos de identificação utilizados pelo sistema da FAO, os quais, neste momento, não nos interessam para a realização das análises.
+
+As variáveis de interesse que iremos trabalhar são:
+
+- `area`: traz o nome dos 13 países da América do Sul;
+
+- `item`: tipo de cultura - milho (*maize*), arroz (*Rice, paddy*), soja (*Soybeans*) e trigo (*Wheat*);
+
+- `year`: ano da observação;
+
+- `area_harvested`: traz os valores de área colhida em hectares;
+
+- `production`: traz os valores de produção em toneladas.
+
+Para selecionar as colunas de interesse, utilizamos a função `select()`.
+
+```{r}
+select(.data = graos, area, item, year, area_harvested, production)
+```
+
+Como primeiro argumento, indicamos o objeto a ser manipulado e, em seguida, as colunas a serem selecionadas.
+
+Utilizando o operador *pipe*, prosseguimos da seguinte maneira.
+
+```{r}
+graos |> select(area, item, year, area_harvested, production)
+```
+
+Primeiro, declaramos qual o conjunto de dados iremos utilizar, seguido da função `select()` com as colunas que desejamos selecionar.
+
+Podemos selecionar várias colunas consecutivas com o operador `:`. Basta informar os nomes ou as posições da primeira e da última coluna que se deseja selecionar.
+
+```{r}
+graos |> select(area:year)
+
+graos |> select(4:8)
+```
+
+Em conjunto com a `select()`, podemos utilizar outras funções que nos auxiliam na seleção de colunas.
+
+- `where()`: seleciona as colunas que possuem determinada classe.
+
+```{r}
+graos |> select(where(is.numeric))
+```
+
+- `starts_with()`: seleciona colunas que começam com um texto padrão.
+
+```{r}
+graos |> select(starts_with("year"))
+```
+
+- `ends_with()`: seleciona colunas que terminam com um texto padrão.
+
+```{r}
+graos |> select(ends_with("code"))
+```
+
+- `contains()`: seleciona colunas que possuem um texto padrão.
+
+```{r}
+graos |> select(contains("code"))
+```
+
+Também podemos retirar colunas inserindo o operador `-` antes do nome da variável ou das funções auxiliares.
+
+```{r}
+graos |> select(-contains("code"), -contains("flag"), -domain)
+```
+
+Com a função `select()`, também podemos renomear as variáveis selecionadas. Como primeiro argumento, inserimos o novo nome, seguido do sinal de `=` e o nome original da variável.
+
+```{r}
+graos |> 
+  select(
+    pais = area,
+    cultura = item, 
+    ano = year, 
+    colheita = area_harvested, 
+    producao = production
+  )
+```
+
+### Renomear {#sec-rename}
+
+Para apenas renomear alguma variável, sem realizar a seleção dessas, utilizamos a função `rename()`.
+
+```{r}
+graos |> 
+  rename(
+    pais = area,
+    cultura = item, 
+    ano = year, 
+    colheita = area_harvested, 
+    producao = production
+  ) |> 
+  glimpse()
+```
+
+Podemos utilizar as funções `select()` e `rename()` de forma integrada.
+
+```{r}
+graos_selecionado <- graos |> 
+  select(area, item, year, area_harvested, production) |> 
+  rename(
+    pais = area,
+    cultura = item, 
+    ano = year, 
+    colheita = area_harvested, 
+    producao = production
+  )
+
+graos_selecionado
+```
+
+Note que salvamos as alterações realizadas no objeto `graos_selecionado`. A seguir, utilizaremos este objeto para os demais exemplos.
+
+### Realocar
+
+Utilizamos a função `relocate()` para mover as colunas de lugar.
+
+```{r}
+graos_selecionado |> relocate(ano, pais, cultura, producao, colheita)
+```
+
+É possível selecionar apenas algumas colunas (não necessariamente todas as variáveis do conjunto de dados) para serem arranjadas. Por padrão, as variáveis escolhidas são realocadas para o início do conjunto de dados.
+
+```{r}
+graos_selecionado |> relocate(ano, pais)
+```
+
+Podemos especificar para onde as colunas serão movidas com os argumentos `.before =` e `.after =` (antes ou depois de determinada coluna, respectivamente).
+
+```{r}
+graos_selecionado |> relocate(ano, cultura, .before = pais)
+
+graos_selecionado |> relocate(ano, cultura, .after = pais)
+```
+
+### Modificar e criar {#sec-mutate}
+
+Para modificar ou criar novas variáveis, utilizamos a função `mutate()`.
+
+```{r}
+graos_selecionado |> mutate(producao = producao * 1000)
+```
+
+No exemplo anterior, transformamos os valores da coluna `producao`, em toneladas, para quilogramas. Contudo, também podemos manter a coluna original e criar uma nova. Basta designar um novo nome à nova variável.
+
+```{r}
+graos_selecionado |> mutate(producao_kg = producao * 1000)
+```
+
+## Linhas
+
+Para realizar manipulações de linhas (ou observações) de um conjunto de dados, utilizamos três principais funções: `filter()`, `arrange()` e `distinct()`. Discutiremos sobre cada uma a seguir.
+
+### Filtrar {#sec-filter}
+
+Na @sec-logica, tratamos sobre a lógica por trás da operação de filtragem. Nesta seção, apresentaremos a função `filter()`, que permite filtrar valores específicos em um conjunto de dados de forma simples e eficiente, utilizando operações lógicas para refinar a busca e extrair apenas as observações desejadas.
+
+```{r}
+graos_selecionado |> filter(pais == "Chile")
+```
+
+No exemplo anterior, filtramos apenas as observações referentes ao país `Chile`, contidas na coluna `pais`. Para isso, aplicamos a condição lógica `==`, solicitando que sejam retornadas apenas as linhas em que o valor da coluna `pais` seja exatamente igual a `Chile`.
+
+As demais condições lógicas apresentadas na @tbl-opelog são aplicáveis na função `filter()`.
+
+Também podemos combinar diferentes condições lógicas sobre diferentes variáveis.
+
+```{r}
+graos_selecionado |> 
+  filter(
+    pais %in% c("Brazil", "Argentina", "Chile"),
+    ano == 2010
+  )
+```
+
+No código anterior, com o operador `%in%`, filtramos apenas as observações em que a coluna `pais` contém um dos três valores: `"Brazil"`, `"Argentina"` ou `"Chile"` e, de forma simultânea, também filtramos apenas as observações em que a coluna `ano` tem o valor `2010`. Essa operação é equivalente a fazer o seguinte comando.
+
+```{r}
+graos_selecionado |> 
+  filter(pais %in% c("Brazil", "Argentina", "Chile") & ano == 2010)
+```
+
+Com o operador `&` ("E" lógico), combinamos condições que devem ser todas verdadeiras ao mesmo tempo, ou seja, uma linha só será filtrada se todas as condições apresentadas forem atendidas simultaneamente. No exemplo, filtra-se somente as linhas em que a coluna `pais` contém os valores `"Brazil"`, `"Argentina"` ou `"Chile"` **E** a coluna `ano` é `2010`.
+
+Por outro lado, o operador `|` ("OU" lógico) é usado para combinar condições onde basta que apenas uma delas seja verdadeira, ou seja, uma linha será selecionada se pelo menos uma das condições for atendida (uma condição **OU** a outra condição).
+
+```{r}
+graos_selecionado |> filter(cultura == "Maize" | ano == 2010)
+```
+
+Por fim, podemos excluir determinadas observações com o operador `!`.
+
+```{r}
+graos_selecionado |> filter(!(ano %in% 1962:2018))
+```
+
+No exemplo anterior, excluímos todas as observações contidas entre os anos de 1962 e 2018.
+
+### Ordenar
+
+Com a função `arrange()`, podemos ordenar as linhas de acordo com alguma variável.
+
+```{r}
+graos_selecionado |> arrange(producao)
+```
+
+Por padrão, a função `arrange()` ordena os valores em ordem crescente. Para ordená-las em ordem decrescente, utilizamos a função `desc()` dentro da função `arrange()`.
+
+```{r}
+graos_selecionado |> arrange(desc(producao))
+```
+
+Além disso, podemos ordenar as observações com base em duas ou mais variáveis, sejam elas quantitativas ou qualitativas.
+
+```{r}
+graos_selecionado |> arrange(pais, producao)
+
+graos_selecionado |> arrange(producao, pais)
+```
+
+Perceba que a ordem de declaração das variáveis na função `arrange()` altera a prioridade da ordenação. No exemplo anterior, primeiro, organizamos os nomes dos países por ordem alfabética para depois ordenar pelos valores de produção. No outro caso, começamos a ordenar os valores de produção para depois organizar, alfabeticamente, os nomes dos países, tendo assim um resultado distinto do exemplo anterior.
+
+### Distinguir
+
+A função `distinct()` é utilizada para remover observações duplicadas. Veja o exmeplo a seguir.
+
+```{r}
+dados <- tibble(
+  pais = c("Brasil", "Brasil", "Argentina", "Argentina", "Chile"),
+  ano = c(2020, 2021, 2021, 2021, 2020),
+  producao_cevada = c(50, 60, 110, 110, 85)
+)
+dados
+```
+
+No *data frame* `dados`, há uma observação duplicada referente à produção de cevada na Argentina no ano de 2021.
+
+```{r}
+dados |> distinct()
+```
+
+Com a função `distinct()`, removemos a linha duplicada. Ou seja, ela verifica todas as colunas e exclui as linhas que são idênticas em todas as colunas.
+
+Também podemos aplicar a função para determinadas colunas. 
+
+```{r}
+dados |> distinct(pais)
+```
+
+Esse comando mantém apenas as observações exclusivas da coluna `pais`, descartando todas as outras informações associadas.
+
+Para manter as outras colunas ao filtrar por linhas exclusivas, podemos usar o argumento `.keep_all = TRUE`.
+
+```{r}
+dados |> distinct(pais, .keep_all = TRUE)
+```
+
+Com isso, mantém-se apenas uma linha para cada valor único na coluna `pais`, ignorando as demais colunas. Com isso, o R seleciona a primeira ocorrência de cada valor único de `pais`, e as outras colunas (como `ano` e `producao_milho`) são mantidas com os valores correspondentes à primeira linha de cada país.
+
+## Grupos {#sec-group-summ}
+
+O pacote `dplyr` possui funções que nos permite trabalhar com grupos de variáveis. Nesta seção, abordaremos as seguintes funções: `summarise()`, `group_by()` e a família de funções `slice_()`.
+
+### `summarise()` e `group_by()`
+
+A função `summarise()` calcula medidas-resumo de variáveis quantitativas. Ela resume os dados de determinada observação exclusiva de acordo com uma medida de interesse, como a média, mediana, frequência, proporção, dentre outras.
+
+```{r}
+graos_selecionado |> 
+  summarise(
+    media_producao = mean(producao, na.rm = TRUE),
+    media_colheita = mean(colheita, na.rm = TRUE),
+    max_producao = max(producao, na.rm = TRUE),
+    max_colheita = max(colheita, na.rm = TRUE)
+  )
+```
+
+O argumento `na.rm = TRUE` ignora os valores `NA` para o cálculo da média e produção máxima. Trataremos com mais detalhes sobre esse assunto no @sec-val-ausentes.
+
+Para calcular medidas agrupadas de acordo com mais de uma variável, utilizamos a função `group_by()`[^dplyr-1]. No exemplo abaixo, agruparemos a variável `pais` para calcular a média e o valor máximo de produção (`production`) e de área colhida (`area harvested`) por país.
+
+[^dplyr-1]: A versão mais recente do pacote `dplyr` (dplyr 1.1.0) traz uma nova possibilidade para agrupar variáveis, a `.by`/`by`. Essa novidade atua de modo análogo à função `group_by()`, porém com uma sintaxe de código diferente. Para saber mais, acesse: <https://www.tidyverse.org/blog/2023/02/dplyr-1-1-0-per-operation-grouping/>.
+
+```{r}
+graos_selecionado |> 
+  group_by(pais) |> 
+  summarise(
+    media_producao = mean(producao, na.rm = TRUE),
+    media_colheita = mean(colheita, na.rm = TRUE),
+    max_producao = max(producao, na.rm = TRUE),
+    max_colheita = max(colheita, na.rm = TRUE)
+  )
+```
+
+Também podemos agrupar a partir de duas ou mais variáveis. A seguir, agruparemos as colunas `pais` e `cultura` para calcular a média e o máximo da produção e da área colhida por país e por tipo de cultura.
+
+```{r}
+graos_selecionado |> 
+  group_by(pais, cultura) |> 
+  summarise(
+    media_producao = mean(producao, na.rm = TRUE),
+    media_colheita = mean(colheita, na.rm = TRUE),
+    max_producao = max(producao, na.rm = TRUE),
+    max_colheita = max(colheita, na.rm = TRUE)
+  )
+```
+
+### Funções `slice_()`
+
+A família de funções `slice_()` permite extrair observações baseada em sua posição no *data frame*.
+
+- `slice_head()`: seleciona as *n* primeiras linhas.
+
+```{r}
+graos_selecionado |> slice_head(n = 2)
+```
+
+Também podemos utilizar proporções de linhas com o argumento `prop =`, cujo valor varia de 0 a 1.
+
+```{r}
+graos_selecionado |> slice_head(prop = 0.01)
+```
+
+No exemplo anterior, selecionamos 1\% (`prop = 0.01`) das primeiras linhas do conjunto de dados.
+
+- `slice_tail()`: seleciona as *n* últimas linhas.
+
+```{r}
+graos_selecionado |> slice_tail(n = 2)
+```
+
+Ou ainda, seleciona *p*\% das últimas linhas do conjunto de dados.
+
+```{r}
+graos_selecionado |> slice_tail(prop = 0.01)
+```
+
+- `slice_min()`: seleciona a linha com o menor valor de determinada variável.
+
+```{r}
+graos_selecionado |> slice_min(order_by = producao)
+```
+
+Note que a função nos retorna todas as linhas com o menor valor de produção, no caso, o valor zero. Caso queira selecionar *n* linhas e não todas as linhas com menor valor de determinada variável, devemos declarar a quantidade de linhas em `n =` junto ao argumento `with_ties = FALSE`.
+
+```{r}
+graos_selecionado |> slice_min(order_by = producao, n = 5, with_ties = FALSE)
+```
+
+- `slice_max()`: seleciona a linha com o maior valor de determinada variável.
+
+```{r}
+graos_selecionado |> slice_max(order_by = producao)
+```
+
+De forma semelhante apresentada para a `slice_min()`, podemos selecionar as *n* linhas com maior valor de certa variável.
+
+```{r}
+graos_selecionado |> slice_max(order_by = producao, n = 5)
+```
+
+- `slice_sample()`: seleciona *n* linhas de forma aleatória.
+
+```{r}
+graos_selecionado |> slice_sample(n = 5)
+
+graos_selecionado |> slice_sample(n = 5)
+```
+
+Por fim, podemos selecionar uma certa quantidade de observações de acordo com determinado agrupamento de variáveis. Para isso, utilizamos a função `group_by()`.
+
+```{r}
+graos_selecionado |> 
+  group_by(cultura) |> 
+  slice_max(producao)
+```
+
+No exemplo anterior, selecionamos as linhas com maior produção de acordo com o tipo de cultura.
+
+## Resumo
+
+Neste capítulo, apresentamos as principais ferramentas do pacote `dplyr` para a manipulação e transformação de *data frames*. Grande parte dos desafios dessa etapa na ciência de dados podem ser resolvidos com as funções abordadas até aqui. Dessa forma, é essencial que o leitor dedique um tempo significativo para estudá-las e compreender seu funcionamento em diferentes contextos.
+
+A seguir, apresentaremos funções que permitem combinar múltiplos conjuntos de dados relacionados: as famílias de funções `bind_()`, que unem dados de forma simples, e `_join()`, que realizam junções mais estruturadas com base em colunas comuns.
+

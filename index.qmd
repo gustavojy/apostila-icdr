@@ -1,0 +1,7 @@
+# Prefácio {#sec-prefacio .unnumbered}
+
+A ciência de dados se tornou uma área essencial para a análise e tomada de decisões baseadas em informações. Neste material, nosso objetivo é compartilhar experiências e técnicas utilizando a linguagem de programação R, uma das ferramentas mais utilizadas para manipulação, visualização e modelagem de dados.
+
+Este material foi elaborado para atender tanto aqueles que estão dando os primeiros passos na ciência de dados, quanto para aqueles que já possuem algum conhecimento prévio e desejam aprofundar suas habilidades. A proposta é oferecer um aprendizado estruturado e prático, promovendo a autonomia do leitor para que possa avançar em seus estudos e aplicações.
+
+Ao longo dos capítulos, exploraremos desde conceitos fundamentais até técnicas mais elaboradas, sempre com exemplos práticos e direcionados para desafios reais. Esperamos que este material sirva para que você se sinta mais preparado para aplicar a ciência de dados em seus próprios projetos.

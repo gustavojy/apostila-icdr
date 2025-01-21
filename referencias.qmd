@@ -1,0 +1,13 @@
+# Referências {-}
+
+Além dos materiais complementares listados ao longo dos capítulos, a seguir, estão listadas outras referências recomendadas e utilizadas para a construção deste material. A ordem das obras estão categorizadas de acordo com sua complexidade (iniciando pelas literaturas básicas).
+
+- [Hands-On Programming with R](<https://rstudio-education.github.io/hopr/>) - Grolemund (2014).
+
+- [Ciência de Dados em R](<https://livro.curso-r.com>) - Curso R (2022).
+
+- [R for Data Science](<https://r4ds.hadley.nz/>.) - Wickham, Çetinkaya-Rundel e Grolemund (2023).
+
+- [R Graphics Cookbook](<https://r-graphics.org/>) - Chang (2021).
+
+- [Advanced R](<https://adv-r.hadley.nz/>) - Wickham (2023).

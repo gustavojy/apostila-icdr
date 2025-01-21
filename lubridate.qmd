@@ -1,0 +1,9 @@
+# Data e Tempo {#sec-lubridate}
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+source("_options.R")
+```

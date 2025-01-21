@@ -1,0 +1,25 @@
+# Valores ausentes {#sec-val-ausentes}
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+source("_options.R")
+```
+
+
+
+
+
+Por último, temos a função everything(), utilizada na função select() para arrastar determinadas colunas para o início da base de dados.
+
+```{r}
+graos |> select(Value, Unit, everything())
+```
+
+**USAR EM FILL(EVERYTHING()) PARA O CAPÍTULA NA's**
+
+
+drop_na e na_rm: como usar melhor
+

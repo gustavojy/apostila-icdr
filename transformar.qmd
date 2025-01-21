@@ -1,0 +1,42 @@
+# Transformação {#sec-transformar}
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+source("_options.R")
+```
+
+Com os dados organizados, avançamos para a etapa de **transformação**. Essa fase abrange diversas operações e, por isso, está dividida em 6 parte conforme o tema. Dependendo do tipo de dado presente em cada variável, utilizamos diferentes pacotes do `tidyverse`, especializados em aspectos específicos da transformação. A seguir estão listados os temas, com os respectivos pacotes, que trataremos adiante.
+
+- [Funções essenciais](@sec-dplyr): o pacote `dplyr` apresenta as principais funções de transformação dos dados. Apresenta funções que nos permite realizar operações entre colunas, calcular medidas-resumo, filtrar linhas, criar e selecionar novas colunas, dentre outras. Dominando essas funções, conseguimos resolver a maioria dos assuntos relacionados à etapa de transformação dos dados.
+
+- [Dados relacionais](@sec-joins): apresenta as ferramentas para unir dois ou mais *data frames*. Essas funções também são parte do pacote `dplyr`.
+
+- [Números](@sec-numbers): aprofundaremos alguns conceitos relacionados a vetores numéricos.
+
+- [Data e Tempo](@sec-lubridate): tratam de dados cujas variáveis são do tipo data e tempo. Para isso, utilizaremos as funcionalidades do pacote `lubridate`.
+
+- [Fatores](@sec-forcats): apresentaremos o pacote `forcats` para tratar de dados do tipo fator, tema introduzido na @sec-fator.
+
+- [Texto](@sec-strigr): com o pacote `stringr` veremos como realizar manipulações de textos a partir de expressões regulares.
+
+- [Valores ausentes](@sec-val-ausentes): apresentaremos algumas soluções para tratar de valores ausentes.
+
+```{r}
+#| label: fig-cd-transformar
+#| echo: false
+#| out-width: NULL
+#| fig-cap: |
+#|   A etapa de transformar visa gerar medidas de interesse a partir dos 
+#|   dados brutos. Para cada classe de variáveis, temos um conjunto de 
+#|   ferramentas específicas que, utilizadas em conjunto, geram excelentes
+#|   resultados.
+
+knitr::include_graphics("imagens/cd-etapas-transformar.png", dpi = 270)
+```
+
+Na maioria dos casos, as funcionalidades de transformação dos dados são utilizadas em conjunto com diversas outras. Para integrá-las, o R apresenta um operador muito útil: o ***pipe***. No @sec-dplyr, apresentaremos este importante operador.
+
+Recomendo aos iniciantes em R que comece os estudos desta etapa pelo @sec-dplyr, que aborda as funções básicas e essenciais de transformação, a fim de consolidar tais conceitos. Posteriormente, o leitor se sentirá mais capacitado em explorar os demais capítulos desta etapa conforme a necessidade e interesse.

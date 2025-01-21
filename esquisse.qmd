@@ -1,0 +1,106 @@
+# Gráficos Interativos {#sec-esquisse}
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+source("_options.R")
+```
+
+Uma maneira muito simples e intuitiva de elaborar gráficos com o `ggplot2` é com o pacote `esquisse`. Este pacote apresenta uma ferramenta interativa que permite criar gráficos baseado na sintaxe do `ggplot2`.
+
+```{r}
+#| eval: false
+
+install.packages("esquisse")
+```
+
+```{r}
+library(esquisse)
+```
+
+Para abrir a ferramenta, utilizamos a função `esquisser()`. 
+
+```{r}
+#| eval: false
+
+esquisser()
+```
+
+Ao executar a função, será aberta a seguinte janela no RStudio.
+
+```{r}
+#| echo: false
+
+knitr::include_graphics("imagens/esquisse1.png")
+```
+
+O primeiro passo é importar o conjunto de dados para o `esquisse`. Podemos utilizar objetos do tipo *data frame* salvos no *Environment* ou presentes em outros pacotes. Também é possível importar outros dados que não estejam presentes no RStudio, semelhante ao realizado no @sec-importar.
+
+Caso você tenha um objeto contendo um *data frame*, é possível indicá-lo diretamente na função `esquisser()`, antes de abrir a ferramenta. Para isso, colocamos no argumento `data =` o nome do objeto. Faremos isso com os dados do arquivo `alunos.csv`, o mesmo utilizado no @sec-visualizar.
+
+```{r}
+#| eval: false
+
+dados_alunos <- readr::read_csv("dados/alunos.csv")
+
+esquisser(data = dados_alunos)
+```
+
+Ao selecionar um conjunto de dados, podemos visualizá-lo clicando na aba `View`. Na aba `Update`, podemos selecionar, renomear e alterar a classe de variáveis antes de importar os dados à ferramenta. Selecionado e ajustado o conjunto de dados, clicamos em `Import data` para importá-los.
+
+A tela de entrada do `esquisse` tem a seguinte aparência.
+
+```{r}
+#| echo: false
+
+knitr::include_graphics("imagens/esquisse2.png")
+```
+
+Como componentes, temos diversos parâmetros. Logo acima, temos uma caixa com as variáveis do conjunto de dados. Perceba que as cores das variáveis são diferenciadas conforme o seu tipo (quantitativa ou qualitativa).
+
+Em seguida, temos os parâmetros estéticos do `ggplot2`. Para definir uma variável a um dos parâmetros, arrastamo-as para o respectivo bloco.
+
+Ao arrastar as variáveis para os parâmetros, a ferramenta atribui, automaticamente, uma geometria condizente com os tipo de dados. Para alterar a geometria, clicamos na caixa logo ao lado das já citadas.
+
+O espaço em branco é o local onde o gráfico será construído. Além disso, apresenta um botão que permite exportar o gráfico gerado.
+
+No menu inferior, temos diversas opções de alteração do gráfico:
+
+- *Labels & Title*: adicionamos legendas e rótulos ao gráfico e aos eixos;
+
+- *Plot options*: altera parâmetros do gráfico, variando com o tipo de geometria;
+
+- *Appearance*: permite modificar as cores, o tema e a posição das legendas;
+
+- *Data*: apresenta ferramentas que transformam os dados, utilizando a lógica dos pacotes de transformação, principalmente o `dplyr` (@sec-dplyr);
+
+- *Code*: mostra a prévia do código conforme as alterações realizadas.
+
+Por fim, no menu superior, podemos alterar o conjunto de dados a ser utilizado, visualizar os dados e adicionar outros parâmetros.
+
+```{r}
+#| echo: false
+
+knitr::include_graphics("imagens/esquisse3.png")
+```
+
+```{r}
+#| echo: false
+
+knitr::include_graphics("imagens/esquisse4.png")
+```
+
+Também temos a opção de abrir a ferramenta em outros locais. Utilizando o argumento `viewer =`, podemos abri-la na aba *Viewer* do RStudio (`"viewer = pane"`) ou no navegador de *internet* (`"viewer = browser"`).
+
+```{r}
+#| eval: false
+
+esquisser(viewer = "pane")
+esquisser(viewer = "browser")
+```
+
+Dessa forma, o `esquisse` se apresenta como uma excelente ferramenta para aprendermos a lógica do `ggplot2` de maneira simples e intuitiva.
+
+Para mais informações sobre o pacote `esquisse`, confira o seguinte link: <https://cran.r-project.org/web/packages/esquisse/vignettes/get-started.html>.

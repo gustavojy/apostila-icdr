@@ -1,0 +1,264 @@
+# Dados relacionais {#sec-joins}
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+source("_options.R")
+```
+
+## Introdução
+
+Em diversas situações, precisamos utilizar informações provenientes de diferentes bases de dados, como no caso de planilhas Excel distintas. Para isso, é necessário juntar todas as informações em um único *data frame*.
+
+O pacote `dplyr` oferece diversas funções que facilitam esse processo. Neste capítulo, apresentaremos as funções das famílias `bind_()` e `_join()`.
+
+```{r}
+library(dplyr)
+```
+
+Usaremos a planilha `dados-juntar.xlsx` para os exemplos. Para fazer o download do arquivo, [clique aqui](<https://github.com/gustavojy/apostila-icdr/raw/refs/heads/main/dados/dados-juntar.zip>).
+
+```{r}
+library(readxl)
+
+excel_sheets("dados/dados-juntar.xlsx")
+```
+
+Com a função `excel_sheets()`, verificamos que a planilha contém 5 abas, todas relacionadas a um mesmo tema, que precisamos consolidar em um único *data frame*. Assim, devemos carregar cada aba da planilha em objetos distintos.
+
+```{r}
+d1 <- read_excel("dados/dados-juntar.xlsx", sheet = "dados1")
+d1
+
+d2 <- read_excel("dados/dados-juntar.xlsx", sheet = "dados2")
+d2
+
+d3 <- read_excel("dados/dados-juntar.xlsx", sheet = "dados3")
+d3
+
+d4 <- read_excel("dados/dados-juntar.xlsx", sheet = "dados4")
+d4
+
+d5 <- read_excel("dados/dados-juntar.xlsx", sheet = "dados5")
+d5
+```
+
+## Funções `bind_()`
+
+As funções do tipo `bind_()` são as mais simples para combinar conjuntos de dados. A função `bind_rows()` permite unir as observações (linhas) de dois ou mais *data frames* com base nas colunas. Essa abordagem é útil quando os conjuntos de dados compartilham a mesma estrutura de variáveis (colunas), mas contêm observações diferentes.
+
+Com essa função, podemos realizar a união dos *data frames* `d1`, `d2`, `d3` e `d4`, que possuem as mesmas variáveis, porém tratando de diferentes observações.
+
+Primeiramente, uniremos as bases `d1` e `d2`. Para isso, utilizamos a função `bind_rows()`, declarando os *data frames* que desejamos combinar, separados por vírgula.
+
+```{r}
+d1_d2 <- bind_rows(d1, d2)
+d1_d2
+```
+
+Uma vez unidos os dados de `d1` e `d2`, juntaremos com o `d3`. Note que as colunas do *data frame* `d3` apresentam uma ordem diferente em relação às de `d1` e de `d2`. Apesar disso, a função `bind_rows()` consegue combinar as linhas de maneira adequada, desde que os nomes das colunas dos conjuntos de dados sejam iguais.
+
+```{r}
+d1_d2_d3 <- bind_rows(d1_d2, d3)
+d1_d2_d3
+```
+
+A função `bind_rows()` também consegue juntar mais de dois conjuntos de dados em um só comando. Basta declararmos os *data frames* que desejamos combinar.
+
+```{r}
+d1_d2_d3_d4 <- bind_rows(d1, d2, d3, d4)
+d1_d2_d3_d4
+```
+
+Juntando os dados de `d4` com os dados de `d1`, `d2` e `d3`, percebemos que foi criada uma nova coluna. Isso ocorre pois a nomenclatura atribuída à variável `nome` no `d4` está no plural. Sendo assim, precisamos padronizar o nome dessa variável antes de juntá-la às demais utilizando a função `rename()` (vide @sec-rename).
+
+```{r}
+d4_corrigido <- d4 |> rename("nome" = nomes)
+
+names(d4_corrigido)
+```
+
+```{r}
+d1_d2_d3_d4 <- bind_rows(d1, d2, d3, d4_corrigido)
+d1_d2_d3_d4
+```
+
+Dessa forma, ao realizar a junção dos quatro conjuntos de dados, os nomes são alocados em uma única coluna (`nome`).
+
+De modo análogo à `bind_rows()`, a função `bind_cols()` une colunas de dois ou mais conjuntos de dados. A seguir, juntaremos as colunas dos *data frames* `d1_d2_d3_d4` e `d5`.
+
+```{r}
+d1_d2_d3_d4_d5 <- bind_cols(d1_d2_d3_d4, d5)
+d1_d2_d3_d4_d5
+```
+
+Note que a função juntou as colunas, preservando todas as variáveis, bem como a ordem original das linhas das bases de dados. Porém, nesse caso, seria conveniente unir as colunas com base na variável em comum entre os conjuntos, no caso, a variável `nome`. Para isso, utilizamos um outro conjunto de funções, as do tipo `_join`.
+
+## Funções `_join()`
+
+As funções da família `_join()` (também conhecidas por *merge*) são utilizadas para combinar *data frames* com base em uma ou mais colunas em comum. Elas são úteis quando precisamos integrar dados complementares provenientes de diferentes fontes. A figura @fig-join ilustra as possíveis operações a serem realizadas.
+
+```{r}
+#| label: fig-join
+#| echo: false
+#| out-width: NULL
+#| fig-cap: |
+#|   Diagrama ilustrando os diferentes tipos de _join.\
+#|   Fonte: R for Data Science, 2017.
+
+knitr::include_graphics("imagens/join-venn.png")
+```
+
+No exemplo anterior, você deve ter notado que o *data frame* `d5` possui observações em comum com o `d1_d2_d3_d4`, mas também, diferentes. Nesse caso, de acordo com o interesse da análise, podemos proceder de diferentes maneiras.
+
+### `inner_join()`
+
+A função `inner_join()` retorna apenas as observações em comum entre dois conjuntos de dados, de acordo com certa variável.
+
+```{r}
+#| label: fig-inner
+#| echo: false
+#| out-width: NULL
+#| fig-cap: |
+#|   Esquematização da função inner_join(), que retorna as observações em 
+#|   comum entre os dois conjuntos de dados.\
+#|   Fonte: R for Data Science, 2017.
+
+knitr::include_graphics("imagens/join-inner.png")
+```
+
+```{r}
+d_inner <- inner_join(x = d1_d2_d3_d4, y = d5, by = "nome")
+d_inner
+```
+
+Na função acima, declaramos os dois *data frames* a serem combinados, junto ao argumento `by = "nome"`, ou seja, a variável em comum. Como resultado, a `inner_join()` nos retornou apenas as observações em comum entre os conjuntos de dados, em relação à coluna `nome`.
+
+Caso haja mais de uma variável em comum, basta declarar um vetor com as variáveis no argumento `by =` (`by = c("var_1", "var_2", ..., "var_n")`). Atente-se ao fato que as variáveis devem estar entre aspas.
+
+### `full_join()`
+
+A função `full_join()` nos retorna todas as observações de ambos os *data frames*, atribuindo o valor `NA` quando não houver correspondência em um deles.
+
+```{r}
+#| label: fig-full
+#| echo: false
+#| out-width: NULL
+#| fig-cap: |
+#|   Esquematização da função full_join(), que retorna todas as observações 
+#|   de ambos os conjuntos.\
+#|   Fonte: R for Data Science, 2017.
+
+knitr::include_graphics("imagens/join-full.png")
+```
+
+```{r}
+d_full <- full_join(x = d1_d2_d3_d4, y = d5, by = "nome")
+d_full
+```
+
+### `left_join()` e `right_join()`
+
+A função `left_join()` mantém todas as observações do primeiro conjunto declarado (`x =`) e adiciona os valores em comum do segundo conjunto (`y =`).
+
+Por outro lado, a `right_join()` retorna todas as observações do segundo conjunto (`y =`) e adiciona os valores em comum do primeiro conjunto (`x =`).
+
+Caso não haja correspondência entre os conjuntos, serão atribuídos valores `NA`.
+
+```{r}
+#| label: fig-rl
+#| echo: false
+#| out-width: NULL
+#| fig-cap: |
+#|   Esquematização das funções left_join() e right_join(), que retornam todas 
+#|   as observações presentes no primeiro e no segundo conjunto de dados, 
+#|   respectivamente, além dos presentes no outro conjunto.\
+#|   Fonte: R for Data Science, 2017.
+
+knitr::include_graphics("imagens/join-rl.png")
+```
+
+```{r}
+d_left <- left_join(x = d1_d2_d3_d4, y = d5, by = "nome")
+d_left
+
+d_right <- right_join(x = d1_d2_d3_d4, y = d5, by = "nome")
+d_right
+```
+
+### `semi_join()` e `anti_join()`
+
+O `semi_join()` retorna apenas as observações do primeiro conjunto (`x =`) que também estão presentes no segundo conjunto (`y =`).
+
+```{r}
+#| label: fig-semi
+#| echo: false
+#| out-width: NULL
+#| fig-cap: |
+#|   Esquematização da função semi_join(), que retorna todas as observações do 
+#|   primeiro conjunto que também estão presentes no segundo conjunto.\
+#|   Fonte: R for Data Science, 2017.
+
+knitr::include_graphics("imagens/join-semi.png")
+```
+
+```{r}
+# Tendo como primeiro conjunto o `d1_d2_d3_d4`
+d_semi1 <- semi_join(x = d1_d2_d3_d4, y = d5, by = "nome")
+d_semi1
+
+# Tendo como primeiro conjunto o `d5`
+d_semi2 <- semi_join(x = d5, y = d1_d2_d3_d4, by = "nome")
+d_semi2
+```
+
+Já o `anti_join()` retorna apenas as observações do primeiro conjunto (`x =`) que não estão presentes no segundo conjunto (`y =`).
+
+```{r}
+#| label: fig-anti
+#| echo: false
+#| out-width: NULL
+#| fig-cap: |
+#|   Esquematização da função anti_join(), que retorna as observações do 
+#|   primeiro conjunto que não estão presentes no segundo conjunto.\
+#|   Fonte: R for Data Science, 2017.
+
+knitr::include_graphics("imagens/join-anti.png")
+```
+
+```{r}
+# Tendo como primeiro conjunto o `d1_d2_d3_d4`
+d_anti1 <- anti_join(x = d1_d2_d3_d4, y = d5, by = "nome")
+d_anti1
+
+# Tendo como primeiro conjunto o `d5`
+d_anti2 <- anti_join(x = d5, y = d1_d2_d3_d4, by = "nome")
+d_anti2
+```
+
+As funções `semi_join()` e `anti_join()`, diferentemente dos demais `_joins()` apresentados, não adicionam colunas de `y =` ao `x =` (ou vice-versa), mas filtram as colunas de `x =` com base em `y =`.
+
+Dessa forma, `semi_join()` e `anti_join()` são conhecidas por *filtering joins*, pois filtram observações de um conjunto de dados com base na correspondência (ou não) às observações do outro conjunto, atuando de modo semelhante à função `filter()` (vide @sec-filter). Por outro lado, `inner_join()`, `full_join()`, `left_join()` e `right_join()` são *mutating joins*, ou seja, adicionam novas variáveis a um conjunto de dados a partir de observações correspondentes em outro, atuam de maneira semelhante à função `mutate()` (vide @sec-mutate)
+
+## Resumo
+
+A @tbl-bind-join traz um resumo das funções apresetadas neste capítulo.
+
+| Função | Uso |
+|:------------------:|:--------------------------------------------------:|
+| `bind_row()` | Combina linhas de dois ou mais conjuntos |
+| `bind_col()` | Combina colunas de dois ou mais conjuntos |
+| `inner_join()` | Combina linhas em comum entre conjuntos |
+| `full_join()` | Combina todas as linhas entre conjuntos |
+| `left_join()` | Mantém todas as linhas do primeiro conjunto e retorna os correspondentes do segundo conjunto |
+| `right_join()` | Mantém todas as linhas do segundo conjunto e retorna os correspondentes do primeiro conjunto |
+| `semi_join()` | Filtra as linhas do primeiro conjunto correspondentes ao segundo conjunto |
+| `anti_join()` | Filtra as linhas do primeiro conjunto que não são correspondentes ao segundo conjunto |
+
+: Resumo das funções das famílias `bind_()` e `_join()`. {#tbl-bind-join}
+
+As funções das famílias `bind_()` e `_join()` são essenciais para manipulação e integração de dados no R. Saber como utilizá-las nos auxilia no processo de análise, tornando-o mais eficiente e organizado.
+
+Nos próximos capítulos, exploraremos técnicas mais específicas para a transformação de dados. Caso o leitor esteja iniciando seus estudos em R, recomendo que avance diretamente para o @sec-visualizar, onde abordaremos a visualização de dados por meio de gráficos. À medida que ganhar mais familiaridade com a linguagem, você poderá retornar a esses capítulos para aprofundar seus conhecimentos com maior facilidade.

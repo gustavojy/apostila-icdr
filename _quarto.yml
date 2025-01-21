@@ -1,0 +1,74 @@
+project:
+  type: book
+  output-dir: docs
+
+author-title: "Autores"
+affiliation-title: " "
+book:
+  title: "Introdução à Ciência de Dados em R"
+  author: 
+    - name: "Gustavo Jun Yakushiji"
+      affiliation: 
+        name: "Mestrando em Estatística e Experimentação Agronômica ESALQ/USP"
+    - name: "Cristian Marcelo Villegas Lobos"
+      affiliation: 
+        name: "Professor Doutor do Departamento de Ciências Exatas ESALQ/USP"
+  
+  page-footer:
+    left: |
+      Introdução à Ciência de Dados em R. 2ª Edição, 2025.
+    right: |
+      Este material foi confeccionado com <a href="https://quarto.org/">Quarto</a>.
+  cover-image: imagens/cover.png
+  site-url: https://gustavojy.github.io/apostila-icdr/
+  repo-url: https://github.com/gustavojy/icdr
+  repo-branch: main
+  repo-actions: [edit, issue]
+
+  chapters:
+    - index.qmd
+    
+    - part: "Introdução"
+      chapters: 
+        - ciencia-dados.qmd
+        - intro-r.qmd
+        - basico.qmd
+    
+    - part: "Preliminares"
+      chapters: 
+        - importar.qmd
+        - arrumar.qmd
+    
+    - part: "Manipulações"
+      chapters:
+        - transformar.qmd
+        - dplyr.qmd
+        - joins.qmd
+        # - numbers.qmd
+        # - lubridate.qmd
+        # - forcats.qmd
+        # - strigr.qmd
+        # - valores_ausentes.qmd
+
+    - part: "Visualização"
+      chapters: 
+        - visualizar.qmd
+        - esquisse.qmd
+        - graficos-estatisticos.qmd
+
+    - part: "Programação"
+      # chapters: 
+      #   - purrr.qmd
+      #   - forwhile.........
+
+    - referencias.qmd
+
+format:
+  html:
+    theme: 
+      light: cosmo
+      dark: darkly
+    toc: true
+    code-link: true
+
+lang: pt-BR

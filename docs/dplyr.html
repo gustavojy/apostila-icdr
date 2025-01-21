@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>7&nbsp; Funções essenciais – Introdução à Ciência de Dados em R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./joins.html" rel="next">
+<link href="./transformar.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./transformar.html">Manipulações</a></li><li class="breadcrumb-item"><a href="./dplyr.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Funções essenciais</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introdução à Ciência de Dados em R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/gustavojy/icdr" title="Código fonte" class="quarto-navigation-tool px-1" aria-label="Código fonte"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Introdução</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ciencia-dados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ciência de dados</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R / RStudio</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basico.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Noções básicas em R</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Preliminares</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./importar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Importação</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arrumar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Organização</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Manipulações</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transformar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Transformação</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dplyr.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Funções essenciais</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dados relacionais</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Visualização</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./visualizar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Gráficos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./esquisse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Gráficos Interativos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./graficos-estatisticos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Estatíticas</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Programação</span></span>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./referencias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referências</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Índice</h2>
+   
+  <ul>
+<li><a href="#introdu%C3%A7%C3%A3o" id="toc-introdução" class="nav-link active" data-scroll-target="#introdu%C3%A7%C3%A3o"><span class="header-section-number">7.1</span> Introdução</a></li>
+  <li><a href="#sec-pipe" id="toc-sec-pipe" class="nav-link" data-scroll-target="#sec-pipe"><span class="header-section-number">7.2</span> Operador <em>pipe</em></a></li>
+  <li>
+<a href="#colunas" id="toc-colunas" class="nav-link" data-scroll-target="#colunas"><span class="header-section-number">7.3</span> Colunas</a>
+  <ul class="collapse">
+<li><a href="#selecionar" id="toc-selecionar" class="nav-link" data-scroll-target="#selecionar"><span class="header-section-number">7.3.1</span> Selecionar</a></li>
+  <li><a href="#sec-rename" id="toc-sec-rename" class="nav-link" data-scroll-target="#sec-rename"><span class="header-section-number">7.3.2</span> Renomear</a></li>
+  <li><a href="#realocar" id="toc-realocar" class="nav-link" data-scroll-target="#realocar"><span class="header-section-number">7.3.3</span> Realocar</a></li>
+  <li><a href="#sec-mutate" id="toc-sec-mutate" class="nav-link" data-scroll-target="#sec-mutate"><span class="header-section-number">7.3.4</span> Modificar e criar</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#linhas" id="toc-linhas" class="nav-link" data-scroll-target="#linhas"><span class="header-section-number">7.4</span> Linhas</a>
+  <ul class="collapse">
+<li><a href="#sec-filter" id="toc-sec-filter" class="nav-link" data-scroll-target="#sec-filter"><span class="header-section-number">7.4.1</span> Filtrar</a></li>
+  <li><a href="#ordenar" id="toc-ordenar" class="nav-link" data-scroll-target="#ordenar"><span class="header-section-number">7.4.2</span> Ordenar</a></li>
+  <li><a href="#distinguir" id="toc-distinguir" class="nav-link" data-scroll-target="#distinguir"><span class="header-section-number">7.4.3</span> Distinguir</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-group-summ" id="toc-sec-group-summ" class="nav-link" data-scroll-target="#sec-group-summ"><span class="header-section-number">7.5</span> Grupos</a>
+  <ul class="collapse">
+<li><a href="#summarise-e-group_by" id="toc-summarise-e-group_by" class="nav-link" data-scroll-target="#summarise-e-group_by"><span class="header-section-number">7.5.1</span> <code>summarise()</code> e <code>group_by()</code></a></li>
+  <li><a href="#fun%C3%A7%C3%B5es-slice_" id="toc-funções-slice_" class="nav-link" data-scroll-target="#fun%C3%A7%C3%B5es-slice_"><span class="header-section-number">7.5.2</span> Funções <code>slice_()</code></a></li>
+  </ul>
+</li>
+  <li><a href="#resumo" id="toc-resumo" class="nav-link" data-scroll-target="#resumo"><span class="header-section-number">7.6</span> Resumo</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/gustavojy/icdr/edit/main/dplyr.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/gustavojy/icdr/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./transformar.html">Manipulações</a></li><li class="breadcrumb-item"><a href="./dplyr.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Funções essenciais</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-dplyr" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Funções essenciais</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="introdução" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="introdução">
+<span class="header-section-number">7.1</span> Introdução</h2>
+<p>Neste capítulo, exploraremos as principais funções de manipulação de dados disponíveis no pacote <code>dplyr</code>.</p>
+<p>O <code>dplyr</code> é um dos principais pacotes do <code>tidyverse</code>. Ele oferece um conjunto de ferramentas intuitivas e robustas para a manipulação de dados de forma eficiente. A seguir, apresentaremos as principais funções do pacote, que nos permitem resolver a maioria dos problemas relacionados à etapa de transformação dos dados.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para os exemplos, utilizaremos um conjunto de dados da <a href="https://www.fao.org/faostat/en/#data">FAOSTAT</a>. Os dados estão disponíveis para download <a href="https://github.com/gustavojy/apostila-icdr/raw/refs/heads/main/dados/dados-transformar.zip">clicando aqui</a>.</p>
+<p>Mas antes de adentrar ao pacote <code>dplyr</code>, vamos conhecer o operador <em>pipe</em>.</p>
+</section><section id="sec-pipe" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="sec-pipe">
+<span class="header-section-number">7.2</span> Operador <em>pipe</em>
+</h2>
+<p>Na maioria dos casos, utilizaremos mais de uma função para manipular os nossos dados. Com isso, entra em cena o <em>pipe</em>, cujo operador é <code>|&gt;</code>.</p>
+<p>A principal função do <em>pipe</em> é conectar linhas de códigos que se relacionam, executando-as em sequência e de uma só vez. Essa estrutura de código é chamada de <em>pipeline</em>.</p>
+<p>Para ilustrá-lo, faremos uma mesma operação com e sem o <em>pipe</em>, calculando a média final das notas de um aluno, arredondada em uma casa decimal.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">notas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">8.88</span>, <span class="fl">6.84</span>, <span class="fl">7.51</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Sem o pipe</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">notas</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 7.7</span></span>
+<span></span>
+<span><span class="co"># Com o pipe</span></span>
+<span><span class="va">notas</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 7.7</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Com o <em>pipe</em>, colocamos as funções de acordo com a ordem em que desejamos realizar as operações. No exemplo, primeiro declaramos o objeto que contém os valores a serem utilizados. Em seguida, calculamos a média das notas. E por fim, arrendondamos em uma casa decimal o valor obtido no cálculo da média.</p>
+<p>Dessa maneira, ao utilizar o <em>pipe</em>, evitamos de escrever funções dentro de funções, obtendo um código mais legível, claro e compacto, principalmente quando trabalhamos com diversas funções. Além disso, facilita a manutenção do código, caso seja preciso realizar alterações ou consertar possíveis problemas.</p>
+<p>Podemos utilizar o atalho do teclado <code>Ctrl + Shift + M</code> (<code>Cmd + Shift + M</code>) para adicionar o <em>pipe</em> ao código. Para isso, devemos ativá-lo clicando na aba <code>Tools</code> do menu superior, seguido de <code>Global Options...</code>. Ao abrir a janela, em <code>Code</code>, habilite a opção indicada na <a href="#fig-pipe" class="quarto-xref">Figura&nbsp;<span>7.1</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-pipe" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-pipe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="imagens/pipe.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pipe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;7.1: Para inserir o pipe a partir do atalho, habilite a opção “Use native pipe operator”.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Os usuários mais antigos do R devem se lembrar que utilizávamos o operador <code>%&gt;%</code> para o <em>pipe</em>. Este operador está presente no pacote <code>magrittr</code>, outro componente do <code>tidyverse</code>.</p>
+<p>Apesar de ambos os operadores atuarem de modo semelhante para os casos mais simples, o <code>|&gt;</code> funciona sem carregar o <code>tidyverse</code>, pois faz parte do pacote base do R, tornando-o mais simples e independente de qualquer pacote. Esta é a principal vantagem desse operador em relação ao do pacote <code>magrittr</code>.</p>
+<p>Para entender mais sobre as mudanças entre os operadores, recomendo o seguinte texto: <a href="https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/" class="uri">https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/</a>.</p>
+</section><section id="colunas" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="colunas">
+<span class="header-section-number">7.3</span> Colunas</h2>
+<p>Existem quatro principais funções relacionadas a manipulação de colunas (ou variáveis): <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rename.html">rename()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate()</a></code> e <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>. A seguir, trataremos de cada uma delas.</p>
+<section id="selecionar" class="level3" data-number="7.3.1"><h3 data-number="7.3.1" class="anchored" data-anchor-id="selecionar">
+<span class="header-section-number">7.3.1</span> Selecionar</h3>
+<p>A primeira função que apresentaremos é a <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, que seleciona as variáveis de um <em>data frame</em>. Primeiramente, vamos importar e analisar os dados do arquivo <code>prod_graos.csv</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"dados/prod-graos.csv"</span><span class="op">)</span></span>
+<span><span class="va">graos</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 12</span></span>
+<span><span class="co">#&gt;    domain_code domain    area_code_fao area  item_code_fao item  year_code  year</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;       &lt;chr&gt;             &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 QCL         Crops an…             9 Arge…            56 Maize      1961  1961</span></span>
+<span><span class="co">#&gt;  2 QCL         Crops an…             9 Arge…            56 Maize      1962  1962</span></span>
+<span><span class="co">#&gt;  3 QCL         Crops an…             9 Arge…            56 Maize      1963  1963</span></span>
+<span><span class="co">#&gt;  4 QCL         Crops an…             9 Arge…            56 Maize      1964  1964</span></span>
+<span><span class="co">#&gt;  5 QCL         Crops an…             9 Arge…            56 Maize      1965  1965</span></span>
+<span><span class="co">#&gt;  6 QCL         Crops an…             9 Arge…            56 Maize      1966  1966</span></span>
+<span><span class="co">#&gt;  7 QCL         Crops an…             9 Arge…            56 Maize      1967  1967</span></span>
+<span><span class="co">#&gt;  8 QCL         Crops an…             9 Arge…            56 Maize      1968  1968</span></span>
+<span><span class="co">#&gt;  9 QCL         Crops an…             9 Arge…            56 Maize      1969  1969</span></span>
+<span><span class="co">#&gt; 10 QCL         Crops an…             9 Arge…            56 Maize      1970  1970</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 4 more variables: flag &lt;chr&gt;, flag_description &lt;chr&gt;, area_harvested &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   production &lt;dbl&gt;</span></span>
+<span></span>
+<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">graos</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 2,842</span></span>
+<span><span class="co">#&gt; Columns: 12</span></span>
+<span><span class="co">#&gt; $ domain_code      &lt;chr&gt; "QCL", "QCL", "QCL", "QCL", "QCL", "QCL", "QCL", "QCL…</span></span>
+<span><span class="co">#&gt; $ domain           &lt;chr&gt; "Crops and livestock products", "Crops and livestock …</span></span>
+<span><span class="co">#&gt; $ area_code_fao    &lt;dbl&gt; 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,…</span></span>
+<span><span class="co">#&gt; $ area             &lt;chr&gt; "Argentina", "Argentina", "Argentina", "Argentina", "…</span></span>
+<span><span class="co">#&gt; $ item_code_fao    &lt;dbl&gt; 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 5…</span></span>
+<span><span class="co">#&gt; $ item             &lt;chr&gt; "Maize", "Maize", "Maize", "Maize", "Maize", "Maize",…</span></span>
+<span><span class="co">#&gt; $ year_code        &lt;dbl&gt; 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969,…</span></span>
+<span><span class="co">#&gt; $ year             &lt;dbl&gt; 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969,…</span></span>
+<span><span class="co">#&gt; $ flag             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</span></span>
+<span><span class="co">#&gt; $ flag_description &lt;chr&gt; "Official data", "Official data", "Official data", "O…</span></span>
+<span><span class="co">#&gt; $ area_harvested   &lt;dbl&gt; 2744400, 2756670, 2645400, 2970500, 3062300, 3274500,…</span></span>
+<span><span class="co">#&gt; $ production       &lt;dbl&gt; 4850000, 5220000, 4360000, 5350000, 5140000, 7040000,…</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O conjunto de dados traz a produção e área colhida de milho, soja, trigo e arroz nos países da América do Sul entre 1961 e 2019. Com a função <code><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse()</a></code>, constatamos que o <em>data frame</em> apresenta 2.842 observações e 12 variáveis. Como podemos observar, muitas das variáveis são códigos de identificação utilizados pelo sistema da FAO, os quais, neste momento, não nos interessam para a realização das análises.</p>
+<p>As variáveis de interesse que iremos trabalhar são:</p>
+<ul>
+<li><p><code>area</code>: traz o nome dos 13 países da América do Sul;</p></li>
+<li><p><code>item</code>: tipo de cultura - milho (<em>maize</em>), arroz (<em>Rice, paddy</em>), soja (<em>Soybeans</em>) e trigo (<em>Wheat</em>);</p></li>
+<li><p><code>year</code>: ano da observação;</p></li>
+<li><p><code>area_harvested</code>: traz os valores de área colhida em hectares;</p></li>
+<li><p><code>production</code>: traz os valores de produção em toneladas.</p></li>
+</ul>
+<p>Para selecionar as colunas de interesse, utilizamos a função <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">graos</span>, <span class="va">area</span>, <span class="va">item</span>, <span class="va">year</span>, <span class="va">area_harvested</span>, <span class="va">production</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    area      item   year area_harvested production</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;          &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize  1961        2744400    4850000</span></span>
+<span><span class="co">#&gt;  2 Argentina Maize  1962        2756670    5220000</span></span>
+<span><span class="co">#&gt;  3 Argentina Maize  1963        2645400    4360000</span></span>
+<span><span class="co">#&gt;  4 Argentina Maize  1964        2970500    5350000</span></span>
+<span><span class="co">#&gt;  5 Argentina Maize  1965        3062300    5140000</span></span>
+<span><span class="co">#&gt;  6 Argentina Maize  1966        3274500    7040000</span></span>
+<span><span class="co">#&gt;  7 Argentina Maize  1967        3450500    8510000</span></span>
+<span><span class="co">#&gt;  8 Argentina Maize  1968        3377700    6560000</span></span>
+<span><span class="co">#&gt;  9 Argentina Maize  1969        3556000    6860000</span></span>
+<span><span class="co">#&gt; 10 Argentina Maize  1970        4017330    9360000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Como primeiro argumento, indicamos o objeto a ser manipulado e, em seguida, as colunas a serem selecionadas.</p>
+<p>Utilizando o operador <em>pipe</em>, prosseguimos da seguinte maneira.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">area</span>, <span class="va">item</span>, <span class="va">year</span>, <span class="va">area_harvested</span>, <span class="va">production</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    area      item   year area_harvested production</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;          &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize  1961        2744400    4850000</span></span>
+<span><span class="co">#&gt;  2 Argentina Maize  1962        2756670    5220000</span></span>
+<span><span class="co">#&gt;  3 Argentina Maize  1963        2645400    4360000</span></span>
+<span><span class="co">#&gt;  4 Argentina Maize  1964        2970500    5350000</span></span>
+<span><span class="co">#&gt;  5 Argentina Maize  1965        3062300    5140000</span></span>
+<span><span class="co">#&gt;  6 Argentina Maize  1966        3274500    7040000</span></span>
+<span><span class="co">#&gt;  7 Argentina Maize  1967        3450500    8510000</span></span>
+<span><span class="co">#&gt;  8 Argentina Maize  1968        3377700    6560000</span></span>
+<span><span class="co">#&gt;  9 Argentina Maize  1969        3556000    6860000</span></span>
+<span><span class="co">#&gt; 10 Argentina Maize  1970        4017330    9360000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Primeiro, declaramos qual o conjunto de dados iremos utilizar, seguido da função <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> com as colunas que desejamos selecionar.</p>
+<p>Podemos selecionar várias colunas consecutivas com o operador <code>:</code>. Basta informar os nomes ou as posições da primeira e da última coluna que se deseja selecionar.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">area</span><span class="op">:</span><span class="va">year</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    area      item_code_fao item  year_code  year</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;             &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina            56 Maize      1961  1961</span></span>
+<span><span class="co">#&gt;  2 Argentina            56 Maize      1962  1962</span></span>
+<span><span class="co">#&gt;  3 Argentina            56 Maize      1963  1963</span></span>
+<span><span class="co">#&gt;  4 Argentina            56 Maize      1964  1964</span></span>
+<span><span class="co">#&gt;  5 Argentina            56 Maize      1965  1965</span></span>
+<span><span class="co">#&gt;  6 Argentina            56 Maize      1966  1966</span></span>
+<span><span class="co">#&gt;  7 Argentina            56 Maize      1967  1967</span></span>
+<span><span class="co">#&gt;  8 Argentina            56 Maize      1968  1968</span></span>
+<span><span class="co">#&gt;  9 Argentina            56 Maize      1969  1969</span></span>
+<span><span class="co">#&gt; 10 Argentina            56 Maize      1970  1970</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span>
+<span></span>
+<span><span class="va">graos</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    area      item_code_fao item  year_code  year</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;             &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina            56 Maize      1961  1961</span></span>
+<span><span class="co">#&gt;  2 Argentina            56 Maize      1962  1962</span></span>
+<span><span class="co">#&gt;  3 Argentina            56 Maize      1963  1963</span></span>
+<span><span class="co">#&gt;  4 Argentina            56 Maize      1964  1964</span></span>
+<span><span class="co">#&gt;  5 Argentina            56 Maize      1965  1965</span></span>
+<span><span class="co">#&gt;  6 Argentina            56 Maize      1966  1966</span></span>
+<span><span class="co">#&gt;  7 Argentina            56 Maize      1967  1967</span></span>
+<span><span class="co">#&gt;  8 Argentina            56 Maize      1968  1968</span></span>
+<span><span class="co">#&gt;  9 Argentina            56 Maize      1969  1969</span></span>
+<span><span class="co">#&gt; 10 Argentina            56 Maize      1970  1970</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Em conjunto com a <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, podemos utilizar outras funções que nos auxiliam na seleção de colunas.</p>
+<ul>
+<li>
+<code><a href="https://tidyselect.r-lib.org/reference/where.html">where()</a></code>: seleciona as colunas que possuem determinada classe.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/where.html">where</a></span><span class="op">(</span><span class="va">is.numeric</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 6</span></span>
+<span><span class="co">#&gt;    area_code_fao item_code_fao year_code  year area_harvested production</span></span>
+<span><span class="co">#&gt;            &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1             9            56      1961  1961        2744400    4850000</span></span>
+<span><span class="co">#&gt;  2             9            56      1962  1962        2756670    5220000</span></span>
+<span><span class="co">#&gt;  3             9            56      1963  1963        2645400    4360000</span></span>
+<span><span class="co">#&gt;  4             9            56      1964  1964        2970500    5350000</span></span>
+<span><span class="co">#&gt;  5             9            56      1965  1965        3062300    5140000</span></span>
+<span><span class="co">#&gt;  6             9            56      1966  1966        3274500    7040000</span></span>
+<span><span class="co">#&gt;  7             9            56      1967  1967        3450500    8510000</span></span>
+<span><span class="co">#&gt;  8             9            56      1968  1968        3377700    6560000</span></span>
+<span><span class="co">#&gt;  9             9            56      1969  1969        3556000    6860000</span></span>
+<span><span class="co">#&gt; 10             9            56      1970  1970        4017330    9360000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>
+<code><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with()</a></code>: seleciona colunas que começam com um texto padrão.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 2</span></span>
+<span><span class="co">#&gt;    year_code  year</span></span>
+<span><span class="co">#&gt;        &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1      1961  1961</span></span>
+<span><span class="co">#&gt;  2      1962  1962</span></span>
+<span><span class="co">#&gt;  3      1963  1963</span></span>
+<span><span class="co">#&gt;  4      1964  1964</span></span>
+<span><span class="co">#&gt;  5      1965  1965</span></span>
+<span><span class="co">#&gt;  6      1966  1966</span></span>
+<span><span class="co">#&gt;  7      1967  1967</span></span>
+<span><span class="co">#&gt;  8      1968  1968</span></span>
+<span><span class="co">#&gt;  9      1969  1969</span></span>
+<span><span class="co">#&gt; 10      1970  1970</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>
+<code><a href="https://tidyselect.r-lib.org/reference/starts_with.html">ends_with()</a></code>: seleciona colunas que terminam com um texto padrão.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">ends_with</a></span><span class="op">(</span><span class="st">"code"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 2</span></span>
+<span><span class="co">#&gt;    domain_code year_code</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;           &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 QCL              1961</span></span>
+<span><span class="co">#&gt;  2 QCL              1962</span></span>
+<span><span class="co">#&gt;  3 QCL              1963</span></span>
+<span><span class="co">#&gt;  4 QCL              1964</span></span>
+<span><span class="co">#&gt;  5 QCL              1965</span></span>
+<span><span class="co">#&gt;  6 QCL              1966</span></span>
+<span><span class="co">#&gt;  7 QCL              1967</span></span>
+<span><span class="co">#&gt;  8 QCL              1968</span></span>
+<span><span class="co">#&gt;  9 QCL              1969</span></span>
+<span><span class="co">#&gt; 10 QCL              1970</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>
+<code><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains()</a></code>: seleciona colunas que possuem um texto padrão.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains</a></span><span class="op">(</span><span class="st">"code"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 4</span></span>
+<span><span class="co">#&gt;    domain_code area_code_fao item_code_fao year_code</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;               &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 QCL                     9            56      1961</span></span>
+<span><span class="co">#&gt;  2 QCL                     9            56      1962</span></span>
+<span><span class="co">#&gt;  3 QCL                     9            56      1963</span></span>
+<span><span class="co">#&gt;  4 QCL                     9            56      1964</span></span>
+<span><span class="co">#&gt;  5 QCL                     9            56      1965</span></span>
+<span><span class="co">#&gt;  6 QCL                     9            56      1966</span></span>
+<span><span class="co">#&gt;  7 QCL                     9            56      1967</span></span>
+<span><span class="co">#&gt;  8 QCL                     9            56      1968</span></span>
+<span><span class="co">#&gt;  9 QCL                     9            56      1969</span></span>
+<span><span class="co">#&gt; 10 QCL                     9            56      1970</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Também podemos retirar colunas inserindo o operador <code>-</code> antes do nome da variável ou das funções auxiliares.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains</a></span><span class="op">(</span><span class="st">"code"</span><span class="op">)</span>, <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains</a></span><span class="op">(</span><span class="st">"flag"</span><span class="op">)</span>, <span class="op">-</span><span class="va">domain</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    area      item   year area_harvested production</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;          &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize  1961        2744400    4850000</span></span>
+<span><span class="co">#&gt;  2 Argentina Maize  1962        2756670    5220000</span></span>
+<span><span class="co">#&gt;  3 Argentina Maize  1963        2645400    4360000</span></span>
+<span><span class="co">#&gt;  4 Argentina Maize  1964        2970500    5350000</span></span>
+<span><span class="co">#&gt;  5 Argentina Maize  1965        3062300    5140000</span></span>
+<span><span class="co">#&gt;  6 Argentina Maize  1966        3274500    7040000</span></span>
+<span><span class="co">#&gt;  7 Argentina Maize  1967        3450500    8510000</span></span>
+<span><span class="co">#&gt;  8 Argentina Maize  1968        3377700    6560000</span></span>
+<span><span class="co">#&gt;  9 Argentina Maize  1969        3556000    6860000</span></span>
+<span><span class="co">#&gt; 10 Argentina Maize  1970        4017330    9360000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Com a função <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, também podemos renomear as variáveis selecionadas. Como primeiro argumento, inserimos o novo nome, seguido do sinal de <code>=</code> e o nome original da variável.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span></span>
+<span>    pais <span class="op">=</span> <span class="va">area</span>,</span>
+<span>    cultura <span class="op">=</span> <span class="va">item</span>, </span>
+<span>    ano <span class="op">=</span> <span class="va">year</span>, </span>
+<span>    colheita <span class="op">=</span> <span class="va">area_harvested</span>, </span>
+<span>    producao <span class="op">=</span> <span class="va">production</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    pais      cultura   ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize    1961  2744400  4850000</span></span>
+<span><span class="co">#&gt;  2 Argentina Maize    1962  2756670  5220000</span></span>
+<span><span class="co">#&gt;  3 Argentina Maize    1963  2645400  4360000</span></span>
+<span><span class="co">#&gt;  4 Argentina Maize    1964  2970500  5350000</span></span>
+<span><span class="co">#&gt;  5 Argentina Maize    1965  3062300  5140000</span></span>
+<span><span class="co">#&gt;  6 Argentina Maize    1966  3274500  7040000</span></span>
+<span><span class="co">#&gt;  7 Argentina Maize    1967  3450500  8510000</span></span>
+<span><span class="co">#&gt;  8 Argentina Maize    1968  3377700  6560000</span></span>
+<span><span class="co">#&gt;  9 Argentina Maize    1969  3556000  6860000</span></span>
+<span><span class="co">#&gt; 10 Argentina Maize    1970  4017330  9360000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="sec-rename" class="level3" data-number="7.3.2"><h3 data-number="7.3.2" class="anchored" data-anchor-id="sec-rename">
+<span class="header-section-number">7.3.2</span> Renomear</h3>
+<p>Para apenas renomear alguma variável, sem realizar a seleção dessas, utilizamos a função <code><a href="https://dplyr.tidyverse.org/reference/rename.html">rename()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span></span>
+<span>    pais <span class="op">=</span> <span class="va">area</span>,</span>
+<span>    cultura <span class="op">=</span> <span class="va">item</span>, </span>
+<span>    ano <span class="op">=</span> <span class="va">year</span>, </span>
+<span>    colheita <span class="op">=</span> <span class="va">area_harvested</span>, </span>
+<span>    producao <span class="op">=</span> <span class="va">production</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 2,842</span></span>
+<span><span class="co">#&gt; Columns: 12</span></span>
+<span><span class="co">#&gt; $ domain_code      &lt;chr&gt; "QCL", "QCL", "QCL", "QCL", "QCL", "QCL", "QCL", "QCL…</span></span>
+<span><span class="co">#&gt; $ domain           &lt;chr&gt; "Crops and livestock products", "Crops and livestock …</span></span>
+<span><span class="co">#&gt; $ area_code_fao    &lt;dbl&gt; 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,…</span></span>
+<span><span class="co">#&gt; $ pais             &lt;chr&gt; "Argentina", "Argentina", "Argentina", "Argentina", "…</span></span>
+<span><span class="co">#&gt; $ item_code_fao    &lt;dbl&gt; 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 5…</span></span>
+<span><span class="co">#&gt; $ cultura          &lt;chr&gt; "Maize", "Maize", "Maize", "Maize", "Maize", "Maize",…</span></span>
+<span><span class="co">#&gt; $ year_code        &lt;dbl&gt; 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969,…</span></span>
+<span><span class="co">#&gt; $ ano              &lt;dbl&gt; 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969,…</span></span>
+<span><span class="co">#&gt; $ flag             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</span></span>
+<span><span class="co">#&gt; $ flag_description &lt;chr&gt; "Official data", "Official data", "Official data", "O…</span></span>
+<span><span class="co">#&gt; $ colheita         &lt;dbl&gt; 2744400, 2756670, 2645400, 2970500, 3062300, 3274500,…</span></span>
+<span><span class="co">#&gt; $ producao         &lt;dbl&gt; 4850000, 5220000, 4360000, 5350000, 5140000, 7040000,…</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Podemos utilizar as funções <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> e <code><a href="https://dplyr.tidyverse.org/reference/rename.html">rename()</a></code> de forma integrada.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">&lt;-</span> <span class="va">graos</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">area</span>, <span class="va">item</span>, <span class="va">year</span>, <span class="va">area_harvested</span>, <span class="va">production</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span></span>
+<span>    pais <span class="op">=</span> <span class="va">area</span>,</span>
+<span>    cultura <span class="op">=</span> <span class="va">item</span>, </span>
+<span>    ano <span class="op">=</span> <span class="va">year</span>, </span>
+<span>    colheita <span class="op">=</span> <span class="va">area_harvested</span>, </span>
+<span>    producao <span class="op">=</span> <span class="va">production</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">graos_selecionado</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    pais      cultura   ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize    1961  2744400  4850000</span></span>
+<span><span class="co">#&gt;  2 Argentina Maize    1962  2756670  5220000</span></span>
+<span><span class="co">#&gt;  3 Argentina Maize    1963  2645400  4360000</span></span>
+<span><span class="co">#&gt;  4 Argentina Maize    1964  2970500  5350000</span></span>
+<span><span class="co">#&gt;  5 Argentina Maize    1965  3062300  5140000</span></span>
+<span><span class="co">#&gt;  6 Argentina Maize    1966  3274500  7040000</span></span>
+<span><span class="co">#&gt;  7 Argentina Maize    1967  3450500  8510000</span></span>
+<span><span class="co">#&gt;  8 Argentina Maize    1968  3377700  6560000</span></span>
+<span><span class="co">#&gt;  9 Argentina Maize    1969  3556000  6860000</span></span>
+<span><span class="co">#&gt; 10 Argentina Maize    1970  4017330  9360000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note que salvamos as alterações realizadas no objeto <code>graos_selecionado</code>. A seguir, utilizaremos este objeto para os demais exemplos.</p>
+</section><section id="realocar" class="level3" data-number="7.3.3"><h3 data-number="7.3.3" class="anchored" data-anchor-id="realocar">
+<span class="header-section-number">7.3.3</span> Realocar</h3>
+<p>Utilizamos a função <code><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate()</a></code> para mover as colunas de lugar.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate</a></span><span class="op">(</span><span class="va">ano</span>, <span class="va">pais</span>, <span class="va">cultura</span>, <span class="va">producao</span>, <span class="va">colheita</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;      ano pais      cultura producao colheita</span></span>
+<span><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1  1961 Argentina Maize    4850000  2744400</span></span>
+<span><span class="co">#&gt;  2  1962 Argentina Maize    5220000  2756670</span></span>
+<span><span class="co">#&gt;  3  1963 Argentina Maize    4360000  2645400</span></span>
+<span><span class="co">#&gt;  4  1964 Argentina Maize    5350000  2970500</span></span>
+<span><span class="co">#&gt;  5  1965 Argentina Maize    5140000  3062300</span></span>
+<span><span class="co">#&gt;  6  1966 Argentina Maize    7040000  3274500</span></span>
+<span><span class="co">#&gt;  7  1967 Argentina Maize    8510000  3450500</span></span>
+<span><span class="co">#&gt;  8  1968 Argentina Maize    6560000  3377700</span></span>
+<span><span class="co">#&gt;  9  1969 Argentina Maize    6860000  3556000</span></span>
+<span><span class="co">#&gt; 10  1970 Argentina Maize    9360000  4017330</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>É possível selecionar apenas algumas colunas (não necessariamente todas as variáveis do conjunto de dados) para serem arranjadas. Por padrão, as variáveis escolhidas são realocadas para o início do conjunto de dados.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate</a></span><span class="op">(</span><span class="va">ano</span>, <span class="va">pais</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;      ano pais      cultura colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1  1961 Argentina Maize    2744400  4850000</span></span>
+<span><span class="co">#&gt;  2  1962 Argentina Maize    2756670  5220000</span></span>
+<span><span class="co">#&gt;  3  1963 Argentina Maize    2645400  4360000</span></span>
+<span><span class="co">#&gt;  4  1964 Argentina Maize    2970500  5350000</span></span>
+<span><span class="co">#&gt;  5  1965 Argentina Maize    3062300  5140000</span></span>
+<span><span class="co">#&gt;  6  1966 Argentina Maize    3274500  7040000</span></span>
+<span><span class="co">#&gt;  7  1967 Argentina Maize    3450500  8510000</span></span>
+<span><span class="co">#&gt;  8  1968 Argentina Maize    3377700  6560000</span></span>
+<span><span class="co">#&gt;  9  1969 Argentina Maize    3556000  6860000</span></span>
+<span><span class="co">#&gt; 10  1970 Argentina Maize    4017330  9360000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Podemos especificar para onde as colunas serão movidas com os argumentos <code>.before =</code> e <code>.after =</code> (antes ou depois de determinada coluna, respectivamente).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate</a></span><span class="op">(</span><span class="va">ano</span>, <span class="va">cultura</span>, .before <span class="op">=</span> <span class="va">pais</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;      ano cultura pais      colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1  1961 Maize   Argentina  2744400  4850000</span></span>
+<span><span class="co">#&gt;  2  1962 Maize   Argentina  2756670  5220000</span></span>
+<span><span class="co">#&gt;  3  1963 Maize   Argentina  2645400  4360000</span></span>
+<span><span class="co">#&gt;  4  1964 Maize   Argentina  2970500  5350000</span></span>
+<span><span class="co">#&gt;  5  1965 Maize   Argentina  3062300  5140000</span></span>
+<span><span class="co">#&gt;  6  1966 Maize   Argentina  3274500  7040000</span></span>
+<span><span class="co">#&gt;  7  1967 Maize   Argentina  3450500  8510000</span></span>
+<span><span class="co">#&gt;  8  1968 Maize   Argentina  3377700  6560000</span></span>
+<span><span class="co">#&gt;  9  1969 Maize   Argentina  3556000  6860000</span></span>
+<span><span class="co">#&gt; 10  1970 Maize   Argentina  4017330  9360000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span>
+<span></span>
+<span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate</a></span><span class="op">(</span><span class="va">ano</span>, <span class="va">cultura</span>, .after <span class="op">=</span> <span class="va">pais</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    pais        ano cultura colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina  1961 Maize    2744400  4850000</span></span>
+<span><span class="co">#&gt;  2 Argentina  1962 Maize    2756670  5220000</span></span>
+<span><span class="co">#&gt;  3 Argentina  1963 Maize    2645400  4360000</span></span>
+<span><span class="co">#&gt;  4 Argentina  1964 Maize    2970500  5350000</span></span>
+<span><span class="co">#&gt;  5 Argentina  1965 Maize    3062300  5140000</span></span>
+<span><span class="co">#&gt;  6 Argentina  1966 Maize    3274500  7040000</span></span>
+<span><span class="co">#&gt;  7 Argentina  1967 Maize    3450500  8510000</span></span>
+<span><span class="co">#&gt;  8 Argentina  1968 Maize    3377700  6560000</span></span>
+<span><span class="co">#&gt;  9 Argentina  1969 Maize    3556000  6860000</span></span>
+<span><span class="co">#&gt; 10 Argentina  1970 Maize    4017330  9360000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="sec-mutate" class="level3" data-number="7.3.4"><h3 data-number="7.3.4" class="anchored" data-anchor-id="sec-mutate">
+<span class="header-section-number">7.3.4</span> Modificar e criar</h3>
+<p>Para modificar ou criar novas variáveis, utilizamos a função <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>producao <span class="op">=</span> <span class="va">producao</span> <span class="op">*</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    pais      cultura   ano colheita   producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize    1961  2744400 4850000000</span></span>
+<span><span class="co">#&gt;  2 Argentina Maize    1962  2756670 5220000000</span></span>
+<span><span class="co">#&gt;  3 Argentina Maize    1963  2645400 4360000000</span></span>
+<span><span class="co">#&gt;  4 Argentina Maize    1964  2970500 5350000000</span></span>
+<span><span class="co">#&gt;  5 Argentina Maize    1965  3062300 5140000000</span></span>
+<span><span class="co">#&gt;  6 Argentina Maize    1966  3274500 7040000000</span></span>
+<span><span class="co">#&gt;  7 Argentina Maize    1967  3450500 8510000000</span></span>
+<span><span class="co">#&gt;  8 Argentina Maize    1968  3377700 6560000000</span></span>
+<span><span class="co">#&gt;  9 Argentina Maize    1969  3556000 6860000000</span></span>
+<span><span class="co">#&gt; 10 Argentina Maize    1970  4017330 9360000000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No exemplo anterior, transformamos os valores da coluna <code>producao</code>, em toneladas, para quilogramas. Contudo, também podemos manter a coluna original e criar uma nova. Basta designar um novo nome à nova variável.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>producao_kg <span class="op">=</span> <span class="va">producao</span> <span class="op">*</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 6</span></span>
+<span><span class="co">#&gt;    pais      cultura   ano colheita producao producao_kg</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize    1961  2744400  4850000  4850000000</span></span>
+<span><span class="co">#&gt;  2 Argentina Maize    1962  2756670  5220000  5220000000</span></span>
+<span><span class="co">#&gt;  3 Argentina Maize    1963  2645400  4360000  4360000000</span></span>
+<span><span class="co">#&gt;  4 Argentina Maize    1964  2970500  5350000  5350000000</span></span>
+<span><span class="co">#&gt;  5 Argentina Maize    1965  3062300  5140000  5140000000</span></span>
+<span><span class="co">#&gt;  6 Argentina Maize    1966  3274500  7040000  7040000000</span></span>
+<span><span class="co">#&gt;  7 Argentina Maize    1967  3450500  8510000  8510000000</span></span>
+<span><span class="co">#&gt;  8 Argentina Maize    1968  3377700  6560000  6560000000</span></span>
+<span><span class="co">#&gt;  9 Argentina Maize    1969  3556000  6860000  6860000000</span></span>
+<span><span class="co">#&gt; 10 Argentina Maize    1970  4017330  9360000  9360000000</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="linhas" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="linhas">
+<span class="header-section-number">7.4</span> Linhas</h2>
+<p>Para realizar manipulações de linhas (ou observações) de um conjunto de dados, utilizamos três principais funções: <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> e <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code>. Discutiremos sobre cada uma a seguir.</p>
+<section id="sec-filter" class="level3" data-number="7.4.1"><h3 data-number="7.4.1" class="anchored" data-anchor-id="sec-filter">
+<span class="header-section-number">7.4.1</span> Filtrar</h3>
+<p>Na <a href="basico.html#sec-logica" class="quarto-xref"><span>Seção 3.8</span></a>, tratamos sobre a lógica por trás da operação de filtragem. Nesta seção, apresentaremos a função <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>, que permite filtrar valores específicos em um conjunto de dados de forma simples e eficiente, utilizando operações lógicas para refinar a busca e extrair apenas as observações desejadas.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">pais</span> <span class="op">==</span> <span class="st">"Chile"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 233 × 5</span></span>
+<span><span class="co">#&gt;    pais  cultura   ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Chile Maize    1961    83330   162810</span></span>
+<span><span class="co">#&gt;  2 Chile Maize    1962    84560   180760</span></span>
+<span><span class="co">#&gt;  3 Chile Maize    1963    84350   176020</span></span>
+<span><span class="co">#&gt;  4 Chile Maize    1964    88160   241520</span></span>
+<span><span class="co">#&gt;  5 Chile Maize    1965    87644   260000</span></span>
+<span><span class="co">#&gt;  6 Chile Maize    1966    80700   285327</span></span>
+<span><span class="co">#&gt;  7 Chile Maize    1967    92200   362200</span></span>
+<span><span class="co">#&gt;  8 Chile Maize    1968    88540   320810</span></span>
+<span><span class="co">#&gt;  9 Chile Maize    1969    58440   153792</span></span>
+<span><span class="co">#&gt; 10 Chile Maize    1970    73860   239052</span></span>
+<span><span class="co">#&gt; # ℹ 223 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No exemplo anterior, filtramos apenas as observações referentes ao país <code>Chile</code>, contidas na coluna <code>pais</code>. Para isso, aplicamos a condição lógica <code>==</code>, solicitando que sejam retornadas apenas as linhas em que o valor da coluna <code>pais</code> seja exatamente igual a <code>Chile</code>.</p>
+<p>As demais condições lógicas apresentadas na <a href="basico.html#tbl-opelog" class="quarto-xref">Tabela&nbsp;<span>3.2</span></a> são aplicáveis na função <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>.</p>
+<p>Também podemos combinar diferentes condições lógicas sobre diferentes variáveis.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span></span>
+<span>    <span class="va">pais</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Brazil"</span>, <span class="st">"Argentina"</span>, <span class="st">"Chile"</span><span class="op">)</span>,</span>
+<span>    <span class="va">ano</span> <span class="op">==</span> <span class="fl">2010</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 12 × 5</span></span>
+<span><span class="co">#&gt;    pais      cultura       ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize        2010  2904035 22663095</span></span>
+<span><span class="co">#&gt;  2 Argentina Rice, paddy  2010   215670  1243259</span></span>
+<span><span class="co">#&gt;  3 Argentina Soybeans     2010 18130800 52675464</span></span>
+<span><span class="co">#&gt;  4 Argentina Wheat        2010  3325457  9016373</span></span>
+<span><span class="co">#&gt;  5 Brazil    Maize        2010 12678875 55364271</span></span>
+<span><span class="co">#&gt;  6 Brazil    Rice, paddy  2010  2722459 11235986</span></span>
+<span><span class="co">#&gt;  7 Brazil    Soybeans     2010 23327296 68756343</span></span>
+<span><span class="co">#&gt;  8 Brazil    Wheat        2010  2181567  6171250</span></span>
+<span><span class="co">#&gt;  9 Chile     Maize        2010   122547  1357921</span></span>
+<span><span class="co">#&gt; 10 Chile     Rice, paddy  2010    24527    94673</span></span>
+<span><span class="co">#&gt; 11 Chile     Soybeans     2010       NA       NA</span></span>
+<span><span class="co">#&gt; 12 Chile     Wheat        2010   264304  1523921</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No código anterior, com o operador <code>%in%</code>, filtramos apenas as observações em que a coluna <code>pais</code> contém um dos três valores: <code>"Brazil"</code>, <code>"Argentina"</code> ou <code>"Chile"</code> e, de forma simultânea, também filtramos apenas as observações em que a coluna <code>ano</code> tem o valor <code>2010</code>. Essa operação é equivalente a fazer o seguinte comando.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">pais</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Brazil"</span>, <span class="st">"Argentina"</span>, <span class="st">"Chile"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ano</span> <span class="op">==</span> <span class="fl">2010</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 12 × 5</span></span>
+<span><span class="co">#&gt;    pais      cultura       ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize        2010  2904035 22663095</span></span>
+<span><span class="co">#&gt;  2 Argentina Rice, paddy  2010   215670  1243259</span></span>
+<span><span class="co">#&gt;  3 Argentina Soybeans     2010 18130800 52675464</span></span>
+<span><span class="co">#&gt;  4 Argentina Wheat        2010  3325457  9016373</span></span>
+<span><span class="co">#&gt;  5 Brazil    Maize        2010 12678875 55364271</span></span>
+<span><span class="co">#&gt;  6 Brazil    Rice, paddy  2010  2722459 11235986</span></span>
+<span><span class="co">#&gt;  7 Brazil    Soybeans     2010 23327296 68756343</span></span>
+<span><span class="co">#&gt;  8 Brazil    Wheat        2010  2181567  6171250</span></span>
+<span><span class="co">#&gt;  9 Chile     Maize        2010   122547  1357921</span></span>
+<span><span class="co">#&gt; 10 Chile     Rice, paddy  2010    24527    94673</span></span>
+<span><span class="co">#&gt; 11 Chile     Soybeans     2010       NA       NA</span></span>
+<span><span class="co">#&gt; 12 Chile     Wheat        2010   264304  1523921</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Com o operador <code>&amp;</code> (“E” lógico), combinamos condições que devem ser todas verdadeiras ao mesmo tempo, ou seja, uma linha só será filtrada se todas as condições apresentadas forem atendidas simultaneamente. No exemplo, filtra-se somente as linhas em que a coluna <code>pais</code> contém os valores <code>"Brazil"</code>, <code>"Argentina"</code> ou <code>"Chile"</code> <strong>E</strong> a coluna <code>ano</code> é <code>2010</code>.</p>
+<p>Por outro lado, o operador <code>|</code> (“OU” lógico) é usado para combinar condições onde basta que apenas uma delas seja verdadeira, ou seja, uma linha será selecionada se pelo menos uma das condições for atendida (uma condição <strong>OU</strong> a outra condição).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cultura</span> <span class="op">==</span> <span class="st">"Maize"</span> <span class="op">|</span> <span class="va">ano</span> <span class="op">==</span> <span class="fl">2010</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 816 × 5</span></span>
+<span><span class="co">#&gt;    pais      cultura   ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize    1961  2744400  4850000</span></span>
+<span><span class="co">#&gt;  2 Argentina Maize    1962  2756670  5220000</span></span>
+<span><span class="co">#&gt;  3 Argentina Maize    1963  2645400  4360000</span></span>
+<span><span class="co">#&gt;  4 Argentina Maize    1964  2970500  5350000</span></span>
+<span><span class="co">#&gt;  5 Argentina Maize    1965  3062300  5140000</span></span>
+<span><span class="co">#&gt;  6 Argentina Maize    1966  3274500  7040000</span></span>
+<span><span class="co">#&gt;  7 Argentina Maize    1967  3450500  8510000</span></span>
+<span><span class="co">#&gt;  8 Argentina Maize    1968  3377700  6560000</span></span>
+<span><span class="co">#&gt;  9 Argentina Maize    1969  3556000  6860000</span></span>
+<span><span class="co">#&gt; 10 Argentina Maize    1970  4017330  9360000</span></span>
+<span><span class="co">#&gt; # ℹ 806 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Por fim, podemos excluir determinadas observações com o operador <code>!</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="va">ano</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fl">1962</span><span class="op">:</span><span class="fl">2018</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 94 × 5</span></span>
+<span><span class="co">#&gt;    pais                             cultura       ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;                            &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina                        Maize        1961  2744400  4850000</span></span>
+<span><span class="co">#&gt;  2 Argentina                        Maize        2019  7232761 56860704</span></span>
+<span><span class="co">#&gt;  3 Argentina                        Rice, paddy  1961    46000   149000</span></span>
+<span><span class="co">#&gt;  4 Argentina                        Rice, paddy  2019   183285  1189866</span></span>
+<span><span class="co">#&gt;  5 Argentina                        Soybeans     1961      980      957</span></span>
+<span><span class="co">#&gt;  6 Argentina                        Soybeans     2019 16575887 55263891</span></span>
+<span><span class="co">#&gt;  7 Argentina                        Wheat        1961  4420900  5725000</span></span>
+<span><span class="co">#&gt;  8 Argentina                        Wheat        2019  6050953 19459727</span></span>
+<span><span class="co">#&gt;  9 Bolivia (Plurinational State of) Maize        1961   207030   258800</span></span>
+<span><span class="co">#&gt; 10 Bolivia (Plurinational State of) Maize        2019   468080   987503</span></span>
+<span><span class="co">#&gt; # ℹ 84 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No exemplo anterior, excluímos todas as observações contidas entre os anos de 1962 e 2018.</p>
+</section><section id="ordenar" class="level3" data-number="7.4.2"><h3 data-number="7.4.2" class="anchored" data-anchor-id="ordenar">
+<span class="header-section-number">7.4.2</span> Ordenar</h3>
+<p>Com a função <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>, podemos ordenar as linhas de acordo com alguma variável.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">producao</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    pais          cultura    ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;         &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Chile         Soybeans  1990        0        0</span></span>
+<span><span class="co">#&gt;  2 Chile         Soybeans  1991        0        0</span></span>
+<span><span class="co">#&gt;  3 Chile         Soybeans  1992        0        0</span></span>
+<span><span class="co">#&gt;  4 Chile         Soybeans  1988       NA        0</span></span>
+<span><span class="co">#&gt;  5 French Guyana Maize     1990        0        0</span></span>
+<span><span class="co">#&gt;  6 French Guyana Soybeans  1990        0        0</span></span>
+<span><span class="co">#&gt;  7 French Guyana Soybeans  1991        0        0</span></span>
+<span><span class="co">#&gt;  8 French Guyana Soybeans  1992        0        0</span></span>
+<span><span class="co">#&gt;  9 Guyana        Soybeans  1990        0        0</span></span>
+<span><span class="co">#&gt; 10 Guyana        Soybeans  1991        0        0</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Por padrão, a função <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> ordena os valores em ordem crescente. Para ordená-las em ordem decrescente, utilizamos a função <code><a href="https://dplyr.tidyverse.org/reference/desc.html">desc()</a></code> dentro da função <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">producao</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    pais   cultura    ano colheita  producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Brazil Soybeans  2018 34777936 117912450</span></span>
+<span><span class="co">#&gt;  2 Brazil Soybeans  2017 33959879 114732101</span></span>
+<span><span class="co">#&gt;  3 Brazil Soybeans  2019 35881447 114269392</span></span>
+<span><span class="co">#&gt;  4 Brazil Maize     2019 17518054 101138617</span></span>
+<span><span class="co">#&gt;  5 Brazil Maize     2017 17427206  97910658</span></span>
+<span><span class="co">#&gt;  6 Brazil Soybeans  2015 32181243  97464936</span></span>
+<span><span class="co">#&gt;  7 Brazil Soybeans  2016 33183119  96394820</span></span>
+<span><span class="co">#&gt;  8 Brazil Soybeans  2014 30273763  86760520</span></span>
+<span><span class="co">#&gt;  9 Brazil Maize     2015 15407143  85283074</span></span>
+<span><span class="co">#&gt; 10 Brazil Maize     2018 16126368  82366531</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Além disso, podemos ordenar as observações com base em duas ou mais variáveis, sejam elas quantitativas ou qualitativas.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">pais</span>, <span class="va">producao</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    pais      cultura    ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Soybeans  1961      980      957</span></span>
+<span><span class="co">#&gt;  2 Argentina Soybeans  1962     9649    11220</span></span>
+<span><span class="co">#&gt;  3 Argentina Soybeans  1964    12220    14000</span></span>
+<span><span class="co">#&gt;  4 Argentina Soybeans  1965    16422    17000</span></span>
+<span><span class="co">#&gt;  5 Argentina Soybeans  1966    15689    18200</span></span>
+<span><span class="co">#&gt;  6 Argentina Soybeans  1963    19302    18920</span></span>
+<span><span class="co">#&gt;  7 Argentina Soybeans  1967    17290    20500</span></span>
+<span><span class="co">#&gt;  8 Argentina Soybeans  1968    20200    22000</span></span>
+<span><span class="co">#&gt;  9 Argentina Soybeans  1970    25970    26800</span></span>
+<span><span class="co">#&gt; 10 Argentina Soybeans  1969    28200    31800</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span>
+<span></span>
+<span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">producao</span>, <span class="va">pais</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2,842 × 5</span></span>
+<span><span class="co">#&gt;    pais          cultura    ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;         &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Chile         Soybeans  1990        0        0</span></span>
+<span><span class="co">#&gt;  2 Chile         Soybeans  1991        0        0</span></span>
+<span><span class="co">#&gt;  3 Chile         Soybeans  1992        0        0</span></span>
+<span><span class="co">#&gt;  4 Chile         Soybeans  1988       NA        0</span></span>
+<span><span class="co">#&gt;  5 French Guyana Maize     1990        0        0</span></span>
+<span><span class="co">#&gt;  6 French Guyana Soybeans  1990        0        0</span></span>
+<span><span class="co">#&gt;  7 French Guyana Soybeans  1991        0        0</span></span>
+<span><span class="co">#&gt;  8 French Guyana Soybeans  1992        0        0</span></span>
+<span><span class="co">#&gt;  9 Guyana        Soybeans  1990        0        0</span></span>
+<span><span class="co">#&gt; 10 Guyana        Soybeans  1991        0        0</span></span>
+<span><span class="co">#&gt; # ℹ 2,832 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Perceba que a ordem de declaração das variáveis na função <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> altera a prioridade da ordenação. No exemplo anterior, primeiro, organizamos os nomes dos países por ordem alfabética para depois ordenar pelos valores de produção. No outro caso, começamos a ordenar os valores de produção para depois organizar, alfabeticamente, os nomes dos países, tendo assim um resultado distinto do exemplo anterior.</p>
+</section><section id="distinguir" class="level3" data-number="7.4.3"><h3 data-number="7.4.3" class="anchored" data-anchor-id="distinguir">
+<span class="header-section-number">7.4.3</span> Distinguir</h3>
+<p>A função <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code> é utilizada para remover observações duplicadas. Veja o exmeplo a seguir.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dados</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  pais <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Brasil"</span>, <span class="st">"Brasil"</span>, <span class="st">"Argentina"</span>, <span class="st">"Argentina"</span>, <span class="st">"Chile"</span><span class="op">)</span>,</span>
+<span>  ano <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">2021</span>, <span class="fl">2021</span>, <span class="fl">2021</span>, <span class="fl">2020</span><span class="op">)</span>,</span>
+<span>  producao_cevada <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">60</span>, <span class="fl">110</span>, <span class="fl">110</span>, <span class="fl">85</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">dados</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 3</span></span>
+<span><span class="co">#&gt;   pais        ano producao_cevada</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;           &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil     2020              50</span></span>
+<span><span class="co">#&gt; 2 Brasil     2021              60</span></span>
+<span><span class="co">#&gt; 3 Argentina  2021             110</span></span>
+<span><span class="co">#&gt; 4 Argentina  2021             110</span></span>
+<span><span class="co">#&gt; 5 Chile      2020              85</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No <em>data frame</em> <code>dados</code>, há uma observação duplicada referente à produção de cevada na Argentina no ano de 2021.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dados</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
+<span><span class="co">#&gt;   pais        ano producao_cevada</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;           &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil     2020              50</span></span>
+<span><span class="co">#&gt; 2 Brasil     2021              60</span></span>
+<span><span class="co">#&gt; 3 Argentina  2021             110</span></span>
+<span><span class="co">#&gt; 4 Chile      2020              85</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Com a função <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code>, removemos a linha duplicada. Ou seja, ela verifica todas as colunas e exclui as linhas que são idênticas em todas as colunas.</p>
+<p>Também podemos aplicar a função para determinadas colunas.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dados</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">pais</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 1</span></span>
+<span><span class="co">#&gt;   pais     </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 Brasil   </span></span>
+<span><span class="co">#&gt; 2 Argentina</span></span>
+<span><span class="co">#&gt; 3 Chile</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esse comando mantém apenas as observações exclusivas da coluna <code>pais</code>, descartando todas as outras informações associadas.</p>
+<p>Para manter as outras colunas ao filtrar por linhas exclusivas, podemos usar o argumento <code>.keep_all = TRUE</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dados</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">pais</span>, .keep_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   pais        ano producao_cevada</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;           &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil     2020              50</span></span>
+<span><span class="co">#&gt; 2 Argentina  2021             110</span></span>
+<span><span class="co">#&gt; 3 Chile      2020              85</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Com isso, mantém-se apenas uma linha para cada valor único na coluna <code>pais</code>, ignorando as demais colunas. Com isso, o R seleciona a primeira ocorrência de cada valor único de <code>pais</code>, e as outras colunas (como <code>ano</code> e <code>producao_milho</code>) são mantidas com os valores correspondentes à primeira linha de cada país.</p>
+</section></section><section id="sec-group-summ" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="sec-group-summ">
+<span class="header-section-number">7.5</span> Grupos</h2>
+<p>O pacote <code>dplyr</code> possui funções que nos permite trabalhar com grupos de variáveis. Nesta seção, abordaremos as seguintes funções: <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> e a família de funções <code><a href="https://dplyr.tidyverse.org/reference/se-deprecated.html">slice_()</a></code>.</p>
+<section id="summarise-e-group_by" class="level3" data-number="7.5.1"><h3 data-number="7.5.1" class="anchored" data-anchor-id="summarise-e-group_by">
+<span class="header-section-number">7.5.1</span> <code>summarise()</code> e <code>group_by()</code>
+</h3>
+<p>A função <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code> calcula medidas-resumo de variáveis quantitativas. Ela resume os dados de determinada observação exclusiva de acordo com uma medida de interesse, como a média, mediana, frequência, proporção, dentre outras.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    media_producao <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">producao</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    media_colheita <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">colheita</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    max_producao <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">producao</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    max_colheita <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">colheita</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 4</span></span>
+<span><span class="co">#&gt;   media_producao media_colheita max_producao max_colheita</span></span>
+<span><span class="co">#&gt;            &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1       3130662.       1185376.    117912450     35881447</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O argumento <code>na.rm = TRUE</code> ignora os valores <code>NA</code> para o cálculo da média e produção máxima. Trataremos com mais detalhes sobre esse assunto no <span class="quarto-unresolved-ref">?sec-val-ausentes</span>.</p>
+<p>Para calcular medidas agrupadas de acordo com mais de uma variável, utilizamos a função <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. No exemplo abaixo, agruparemos a variável <code>pais</code> para calcular a média e o valor máximo de produção (<code>production</code>) e de área colhida (<code>area harvested</code>) por país.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">pais</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    media_producao <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">producao</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    media_colheita <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">colheita</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    max_producao <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">producao</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    max_colheita <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">colheita</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 13 × 5</span></span>
+<span><span class="co">#&gt;    pais                  media_producao media_colheita max_producao max_colheita</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;                          &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina                  11069997.       3889868.     61446556     19504648</span></span>
+<span><span class="co">#&gt;  2 Bolivia (Plurination…        445249.        243134.      3203992      1387973</span></span>
+<span><span class="co">#&gt;  3 Brazil                     19638343.       7735115.    117912450     35881447</span></span>
+<span><span class="co">#&gt;  4 Chile                        637716.        179720.      1921652       779966</span></span>
+<span><span class="co">#&gt;  5 Colombia                     753641.        280305.      3292983       868867</span></span>
+<span><span class="co">#&gt;  6 Ecuador                      377982.        168084.      1873525       577784</span></span>
+<span><span class="co">#&gt;  7 French Guyana                  5780.          1885.        31544         9281</span></span>
+<span><span class="co">#&gt;  8 Guyana                       182259.         54487.      1050000       206428</span></span>
+<span><span class="co">#&gt;  9 Paraguay                    1134512.        444338.     11045971      3565000</span></span>
+<span><span class="co">#&gt; 10 Peru                         625835.        190828.      3557900       514945</span></span>
+<span><span class="co">#&gt; 11 Suriname                      67796.         17442.       301971        75136</span></span>
+<span><span class="co">#&gt; 12 Uruguay                      479607.        184556.      3212000      1334000</span></span>
+<span><span class="co">#&gt; 13 Venezuela (Bolivaria…        493956.        183419.      2638010       791545</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Também podemos agrupar a partir de duas ou mais variáveis. A seguir, agruparemos as colunas <code>pais</code> e <code>cultura</code> para calcular a média e o máximo da produção e da área colhida por país e por tipo de cultura.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">pais</span>, <span class="va">cultura</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    media_producao <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">producao</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    media_colheita <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">colheita</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    max_producao <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">producao</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    max_colheita <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">colheita</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 49 × 6</span></span>
+<span><span class="co">#&gt; # Groups:   pais [13]</span></span>
+<span><span class="co">#&gt;    pais          cultura media_producao media_colheita max_producao max_colheita</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;         &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina     Maize        14812880.       3243095.     56860704      7232761</span></span>
+<span><span class="co">#&gt;  2 Argentina     Rice, …        714791.        135827.      1748075       289200</span></span>
+<span><span class="co">#&gt;  3 Argentina     Soybea…      17941231.       6967484.     61446556     19504648</span></span>
+<span><span class="co">#&gt;  4 Argentina     Wheat        10811085.       5213066.     19459727      7364200</span></span>
+<span><span class="co">#&gt;  5 Bolivia (Plu… Maize          552919.        297456.      1260926       468080</span></span>
+<span><span class="co">#&gt;  6 Bolivia (Plu… Rice, …        234899.        108135.       600044       194237</span></span>
+<span><span class="co">#&gt;  7 Bolivia (Plu… Soybea…        922200.        472537.      3203992      1387973</span></span>
+<span><span class="co">#&gt;  8 Bolivia (Plu… Wheat          111395.        117736.       337599       229822</span></span>
+<span><span class="co">#&gt;  9 Brazil        Maize        33776948.      12033678.    101138617     17518054</span></span>
+<span><span class="co">#&gt; 10 Brazil        Rice, …       9467493.       4056617.     13476994      6656480</span></span>
+<span><span class="co">#&gt; # ℹ 39 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="funções-slice_" class="level3" data-number="7.5.2"><h3 data-number="7.5.2" class="anchored" data-anchor-id="funções-slice_">
+<span class="header-section-number">7.5.2</span> Funções <code>slice_()</code>
+</h3>
+<p>A família de funções <code><a href="https://dplyr.tidyverse.org/reference/se-deprecated.html">slice_()</a></code> permite extrair observações baseada em sua posição no <em>data frame</em>.</p>
+<ul>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head()</a></code>: seleciona as <em>n</em> primeiras linhas.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 5</span></span>
+<span><span class="co">#&gt;   pais      cultura   ano colheita producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Argentina Maize    1961  2744400  4850000</span></span>
+<span><span class="co">#&gt; 2 Argentina Maize    1962  2756670  5220000</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Também podemos utilizar proporções de linhas com o argumento <code>prop =</code>, cujo valor varia de 0 a 1.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 28 × 5</span></span>
+<span><span class="co">#&gt;    pais      cultura   ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Argentina Maize    1961  2744400  4850000</span></span>
+<span><span class="co">#&gt;  2 Argentina Maize    1962  2756670  5220000</span></span>
+<span><span class="co">#&gt;  3 Argentina Maize    1963  2645400  4360000</span></span>
+<span><span class="co">#&gt;  4 Argentina Maize    1964  2970500  5350000</span></span>
+<span><span class="co">#&gt;  5 Argentina Maize    1965  3062300  5140000</span></span>
+<span><span class="co">#&gt;  6 Argentina Maize    1966  3274500  7040000</span></span>
+<span><span class="co">#&gt;  7 Argentina Maize    1967  3450500  8510000</span></span>
+<span><span class="co">#&gt;  8 Argentina Maize    1968  3377700  6560000</span></span>
+<span><span class="co">#&gt;  9 Argentina Maize    1969  3556000  6860000</span></span>
+<span><span class="co">#&gt; 10 Argentina Maize    1970  4017330  9360000</span></span>
+<span><span class="co">#&gt; # ℹ 18 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No exemplo anterior, selecionamos 1% (<code>prop = 0.01</code>) das primeiras linhas do conjunto de dados.</p>
+<ul>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_tail()</a></code>: seleciona as <em>n</em> últimas linhas.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_tail</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 5</span></span>
+<span><span class="co">#&gt;   pais                               cultura   ano colheita producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                              &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Venezuela (Bolivarian Republic of) Wheat    2009       NA      143</span></span>
+<span><span class="co">#&gt; 2 Venezuela (Bolivarian Republic of) Wheat    2010       NA      183</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ou ainda, seleciona <em>p</em>% das últimas linhas do conjunto de dados.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_tail</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 28 × 5</span></span>
+<span><span class="co">#&gt;    pais                               cultura   ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;                              &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Venezuela (Bolivarian Republic of) Wheat    2009       48       NA</span></span>
+<span><span class="co">#&gt;  2 Venezuela (Bolivarian Republic of) Wheat    2010       61       NA</span></span>
+<span><span class="co">#&gt;  3 Venezuela (Bolivarian Republic of) Wheat    2011       68      204</span></span>
+<span><span class="co">#&gt;  4 Venezuela (Bolivarian Republic of) Wheat    2012       73      218</span></span>
+<span><span class="co">#&gt;  5 Venezuela (Bolivarian Republic of) Wheat    2013       54      161</span></span>
+<span><span class="co">#&gt;  6 Venezuela (Bolivarian Republic of) Wheat    2014       54      161</span></span>
+<span><span class="co">#&gt;  7 Venezuela (Bolivarian Republic of) Wheat    2015       60      179</span></span>
+<span><span class="co">#&gt;  8 Venezuela (Bolivarian Republic of) Wheat    2016       47      140</span></span>
+<span><span class="co">#&gt;  9 Venezuela (Bolivarian Republic of) Wheat    2017      209      584</span></span>
+<span><span class="co">#&gt; 10 Venezuela (Bolivarian Republic of) Wheat    2018      431     1151</span></span>
+<span><span class="co">#&gt; # ℹ 18 more rows</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_min()</a></code>: seleciona a linha com o menor valor de determinada variável.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_min</a></span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">producao</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 11 × 5</span></span>
+<span><span class="co">#&gt;    pais          cultura    ano colheita producao</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;         &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Chile         Soybeans  1990        0        0</span></span>
+<span><span class="co">#&gt;  2 Chile         Soybeans  1991        0        0</span></span>
+<span><span class="co">#&gt;  3 Chile         Soybeans  1992        0        0</span></span>
+<span><span class="co">#&gt;  4 Chile         Soybeans  1988       NA        0</span></span>
+<span><span class="co">#&gt;  5 French Guyana Maize     1990        0        0</span></span>
+<span><span class="co">#&gt;  6 French Guyana Soybeans  1990        0        0</span></span>
+<span><span class="co">#&gt;  7 French Guyana Soybeans  1991        0        0</span></span>
+<span><span class="co">#&gt;  8 French Guyana Soybeans  1992        0        0</span></span>
+<span><span class="co">#&gt;  9 Guyana        Soybeans  1990        0        0</span></span>
+<span><span class="co">#&gt; 10 Guyana        Soybeans  1991        0        0</span></span>
+<span><span class="co">#&gt; 11 Guyana        Soybeans  1992        0        0</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note que a função nos retorna todas as linhas com o menor valor de produção, no caso, o valor zero. Caso queira selecionar <em>n</em> linhas e não todas as linhas com menor valor de determinada variável, devemos declarar a quantidade de linhas em <code>n =</code> junto ao argumento <code>with_ties = FALSE</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_min</a></span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">producao</span>, n <span class="op">=</span> <span class="fl">5</span>, with_ties <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
+<span><span class="co">#&gt;   pais          cultura    ano colheita producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Chile         Soybeans  1990        0        0</span></span>
+<span><span class="co">#&gt; 2 Chile         Soybeans  1991        0        0</span></span>
+<span><span class="co">#&gt; 3 Chile         Soybeans  1992        0        0</span></span>
+<span><span class="co">#&gt; 4 Chile         Soybeans  1988       NA        0</span></span>
+<span><span class="co">#&gt; 5 French Guyana Maize     1990        0        0</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_max()</a></code>: seleciona a linha com o maior valor de determinada variável.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_max</a></span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">producao</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 5</span></span>
+<span><span class="co">#&gt;   pais   cultura    ano colheita  producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brazil Soybeans  2018 34777936 117912450</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>De forma semelhante apresentada para a <code><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_min()</a></code>, podemos selecionar as <em>n</em> linhas com maior valor de certa variável.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_max</a></span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">producao</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
+<span><span class="co">#&gt;   pais   cultura    ano colheita  producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brazil Soybeans  2018 34777936 117912450</span></span>
+<span><span class="co">#&gt; 2 Brazil Soybeans  2017 33959879 114732101</span></span>
+<span><span class="co">#&gt; 3 Brazil Soybeans  2019 35881447 114269392</span></span>
+<span><span class="co">#&gt; 4 Brazil Maize     2019 17518054 101138617</span></span>
+<span><span class="co">#&gt; 5 Brazil Maize     2017 17427206  97910658</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_sample()</a></code>: seleciona <em>n</em> linhas de forma aleatória.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_sample</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
+<span><span class="co">#&gt;   pais                               cultura       ano colheita producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                              &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brazil                             Wheat        1997  1521545  2489070</span></span>
+<span><span class="co">#&gt; 2 Brazil                             Soybeans     1973  3615058  5011614</span></span>
+<span><span class="co">#&gt; 3 Colombia                           Maize        1990   836900  1213300</span></span>
+<span><span class="co">#&gt; 4 Guyana                             Rice, paddy  1975   134000   292000</span></span>
+<span><span class="co">#&gt; 5 Venezuela (Bolivarian Republic of) Wheat        1966     2854     1427</span></span>
+<span></span>
+<span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_sample</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
+<span><span class="co">#&gt;   pais     cultura       ano colheita producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Ecuador  Soybeans     1962       65       80</span></span>
+<span><span class="co">#&gt; 2 Chile    Maize        1970    73860   239052</span></span>
+<span><span class="co">#&gt; 3 Chile    Rice, paddy  1976    28590    97640</span></span>
+<span><span class="co">#&gt; 4 Suriname Rice, paddy  1974    44353   162417</span></span>
+<span><span class="co">#&gt; 5 Brazil   Wheat        1969  1407115  1373691</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Por fim, podemos selecionar uma certa quantidade de observações de acordo com determinado agrupamento de variáveis. Para isso, utilizamos a função <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graos_selecionado</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cultura</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_max</a></span><span class="op">(</span><span class="va">producao</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 5</span></span>
+<span><span class="co">#&gt; # Groups:   cultura [4]</span></span>
+<span><span class="co">#&gt;   pais      cultura       ano colheita  producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brazil    Maize        2019 17518054 101138617</span></span>
+<span><span class="co">#&gt; 2 Brazil    Rice, paddy  2011  2752891  13476994</span></span>
+<span><span class="co">#&gt; 3 Brazil    Soybeans     2018 34777936 117912450</span></span>
+<span><span class="co">#&gt; 4 Argentina Wheat        2019  6050953  19459727</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No exemplo anterior, selecionamos as linhas com maior produção de acordo com o tipo de cultura.</p>
+</section></section><section id="resumo" class="level2" data-number="7.6"><h2 data-number="7.6" class="anchored" data-anchor-id="resumo">
+<span class="header-section-number">7.6</span> Resumo</h2>
+<p>Neste capítulo, apresentamos as principais ferramentas do pacote <code>dplyr</code> para a manipulação e transformação de <em>data frames</em>. Grande parte dos desafios dessa etapa na ciência de dados podem ser resolvidos com as funções abordadas até aqui. Dessa forma, é essencial que o leitor dedique um tempo significativo para estudá-las e compreender seu funcionamento em diferentes contextos.</p>
+<p>A seguir, apresentaremos funções que permitem combinar múltiplos conjuntos de dados relacionados: as famílias de funções <code>bind_()</code>, que unem dados de forma simples, e <code>_join()</code>, que realizam junções mais estruturadas com base em colunas comuns.</p>
+
+
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>A versão mais recente do pacote <code>dplyr</code> (dplyr 1.1.0) traz uma nova possibilidade para agrupar variáveis, a <code>.by</code>/<code>by</code>. Essa novidade atua de modo análogo à função <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>, porém com uma sintaxe de código diferente. Para saber mais, acesse: <a href="https://www.tidyverse.org/blog/2023/02/dplyr-1-1-0-per-operation-grouping/" class="uri">https://www.tidyverse.org/blog/2023/02/dplyr-1-1-0-per-operation-grouping/</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/gustavojy\.github\.io\/apostila-icdr\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./transformar.html" class="pagination-link" aria-label="Transformação">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Transformação</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./joins.html" class="pagination-link" aria-label="Dados relacionais">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dados relacionais</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Introdução à Ciência de Dados em R. 2ª Edição, 2025.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gustavojy/icdr/edit/main/dplyr.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/gustavojy/icdr/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Este material foi confeccionado com <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

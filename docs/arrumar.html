@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>5&nbsp; Organização – Introdução à Ciência de Dados em R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./transformar.html" rel="next">
+<link href="./importar.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./importar.html">Preliminares</a></li><li class="breadcrumb-item"><a href="./arrumar.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Organização</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introdução à Ciência de Dados em R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/gustavojy/icdr" title="Código fonte" class="quarto-navigation-tool px-1" aria-label="Código fonte"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Introdução</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ciencia-dados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ciência de dados</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R / RStudio</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basico.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Noções básicas em R</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Preliminares</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./importar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Importação</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arrumar.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Organização</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Manipulações</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transformar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Transformação</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dplyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Funções essenciais</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dados relacionais</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Visualização</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./visualizar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Gráficos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./esquisse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Gráficos Interativos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./graficos-estatisticos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Estatíticas</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Programação</span></span>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./referencias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referências</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Índice</h2>
+   
+  <ul>
+<li><a href="#introdu%C3%A7%C3%A3o" id="toc-introdução" class="nav-link active" data-scroll-target="#introdu%C3%A7%C3%A3o"><span class="header-section-number">5.1</span> Introdução</a></li>
+  <li>
+<a href="#tibble" id="toc-tibble" class="nav-link" data-scroll-target="#tibble"><span class="header-section-number">5.2</span> Tibble</a>
+  <ul class="collapse">
+<li><a href="#converter-em-tibble" id="toc-converter-em-tibble" class="nav-link" data-scroll-target="#converter-em-tibble"><span class="header-section-number">5.2.1</span> Converter em Tibble</a></li>
+  <li><a href="#criando-tibble" id="toc-criando-tibble" class="nav-link" data-scroll-target="#criando-tibble"><span class="header-section-number">5.2.2</span> Criando Tibble</a></li>
+  </ul>
+</li>
+  <li><a href="#sec-tidy-data" id="toc-sec-tidy-data" class="nav-link" data-scroll-target="#sec-tidy-data"><span class="header-section-number">5.3</span> Dados arrumados</a></li>
+  <li>
+<a href="#sec-pivot" id="toc-sec-pivot" class="nav-link" data-scroll-target="#sec-pivot"><span class="header-section-number">5.4</span> Pivotagem</a>
+  <ul class="collapse">
+<li><a href="#alongando-os-dados" id="toc-alongando-os-dados" class="nav-link" data-scroll-target="#alongando-os-dados"><span class="header-section-number">5.4.1</span> Alongando os dados</a></li>
+  <li><a href="#alargando-os-dados" id="toc-alargando-os-dados" class="nav-link" data-scroll-target="#alargando-os-dados"><span class="header-section-number">5.4.2</span> Alargando os dados</a></li>
+  </ul>
+</li>
+  <li><a href="#separar-e-unir" id="toc-separar-e-unir" class="nav-link" data-scroll-target="#separar-e-unir"><span class="header-section-number">5.5</span> Separar e Unir</a></li>
+  <li><a href="#resumo" id="toc-resumo" class="nav-link" data-scroll-target="#resumo"><span class="header-section-number">5.6</span> Resumo</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/gustavojy/icdr/edit/main/arrumar.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/gustavojy/icdr/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./importar.html">Preliminares</a></li><li class="breadcrumb-item"><a href="./arrumar.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Organização</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-organizar" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Organização</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="introdução" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="introdução">
+<span class="header-section-number">5.1</span> Introdução</h2>
+<p>Neste capítulo, trataremos sobre a <strong>organização</strong> dos dados, seguindo o conceito conhecido como <strong><em>tidy data</em></strong> (<em>dados arrumados</em>), cujo objetivo é ajustar os dados em uma estrutura consistente e padronizada.</p>
+<p>Normalmente, costuma ser trabalhoso o processo de organizar os dados, mas, com o auxílio das ferramentas do <code>tidyverse</code>, conseguimos obter bons resultados que, em longo prazo, nos permite ter mais tempo e facilidade para executar as etapas seguintes.</p>
+<p>Como o próprio nome do pacote sugere, o <code>tidyverse</code> é baseado nos princípios de uma <em>tidy data</em>. Por isso, seus pacotes foram desenvolvidos para funcionarem seguindo tal princípio e serem complementares entre si.</p>
+<p>No <a href="importar.html" class="quarto-xref"><span>Capítulo 4</span></a>, demos início ao processo de organização, seguido da importação dos dados ao R no formato de <strong><em>tibble</em></strong>. Neste capítulo, abordaremos com mais detalhes sobre o pacote <code>tibble</code>, além de apresentar outras ferramentas de organização dos dados, presentes no pacote <code>tidyr</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-cd-organizar" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cd-organizar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="imagens/cd-etapas-arrumar.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cd-organizar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.1: A etapa de arrumar, ou organizar, os dados visa obter uma estrutura consistente e padronizada de dados, a fim de nos auxiliar nas demais etapas da ciência de dados.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Tanto o pacote <code>tibble</code>, como o <code>tidyr</code> fazem parte do <code>tidyverse</code>. Sendo assim, vamos carregá-los.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/">tibble</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Os exemplos a seguir utilizam um mesmo conjunto de dados em diferentes formatações. Para fazer o download dos dados, <a href="https://github.com/gustavojy/apostila-icdr/raw/refs/heads/main/dados/dados-organizar.zip">clique aqui</a>.</p>
+</section><section id="tibble" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="tibble">
+<span class="header-section-number">5.2</span> Tibble</h2>
+<p>No <a href="importar.html" class="quarto-xref"><span>Capítulo 4</span></a> vimos que os pacotes <code>readr</code> e <code>readxl</code> apresentam funções que importam os dados ao R no formato de <strong><em>tibble</em></strong> e não em um <em>data frame</em> tradicional.</p>
+<p>Isso se deve ao fato que ambos os pacotes seguem o padrão <code>tidyverse</code>, bem como a <em>tibble</em>, oriunda do pacote de mesmo nome (<code>tibble</code>). Dessa forma, os pacotes que seguem a lógica do <code>tidyverse</code> utilizam a <em>tibble</em> como o <em>data frame</em> padrão e não a sua versão tradicional<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>De maneira geral, a <em>tibble</em> apresenta as mesmas propriedades de seu análogo original, apresentando algumas melhorias e ajustes que facilitam o nosso trabalho. Dessa forma, os conceitos que vimos na <a href="basico.html#sec-dataf" class="quarto-xref"><span>Seção 3.10</span></a> e <a href="basico.html#sec-lista-df" class="quarto-xref"><span>Seção 3.12</span></a> são válidos para a <em>tibble</em>.</p>
+<p>Apesar da <em>tibble</em> também ser um <em>data frame</em>, neste material, utilizaremos o termo <em>data frame</em> apenas para nos referirmos à versão tradicional.</p>
+<section id="converter-em-tibble" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="converter-em-tibble">
+<span class="header-section-number">5.2.1</span> Converter em Tibble</h3>
+<p>Para converter <em>data frames</em> em <em>tibble</em>, utilizamos a função <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble()</a></code>. Como exemplo, transformaremos o conjunto de dados nativo do R <code>iris</code> para o formato <em>tibble</em>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "data.frame"</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iris_tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span><span class="va">iris_tibble</span></span>
+<span><span class="co">#&gt; # A tibble: 150 × 5</span></span>
+<span><span class="co">#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></span>
+<span><span class="co">#&gt;           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  </span></span>
+<span><span class="co">#&gt;  1          5.1         3.5          1.4         0.2 setosa </span></span>
+<span><span class="co">#&gt;  2          4.9         3            1.4         0.2 setosa </span></span>
+<span><span class="co">#&gt;  3          4.7         3.2          1.3         0.2 setosa </span></span>
+<span><span class="co">#&gt;  4          4.6         3.1          1.5         0.2 setosa </span></span>
+<span><span class="co">#&gt;  5          5           3.6          1.4         0.2 setosa </span></span>
+<span><span class="co">#&gt;  6          5.4         3.9          1.7         0.4 setosa </span></span>
+<span><span class="co">#&gt;  7          4.6         3.4          1.4         0.3 setosa </span></span>
+<span><span class="co">#&gt;  8          5           3.4          1.5         0.2 setosa </span></span>
+<span><span class="co">#&gt;  9          4.4         2.9          1.4         0.2 setosa </span></span>
+<span><span class="co">#&gt; 10          4.9         3.1          1.5         0.1 setosa </span></span>
+<span><span class="co">#&gt; # ℹ 140 more rows</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">iris_tibble</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "tbl_df"     "tbl"        "data.frame"</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Por padrão, a <em>tibble</em> mostra as dimensões da tabela (linhas x colunas) e a classe das variáveis entre <code>&lt;&gt;</code>, logo abaixo de seu nome.</p>
+<p>Além disso, apenas as dez primeiras linhas são apresentadas e, caso o número de colunas não couber na largura da tela, essas são ocultadas da apresentação. Isso evita que a saída no <em>console</em> fique sobrecarregada de informações desordenadas, principalmente quando trabalhamos com um conjunto de dados extenso.</p>
+<p>Caso seja preciso ter uma visão geral dos dados, podemos utilizar a função <code><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">iris_tibble</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 150</span></span>
+<span><span class="co">#&gt; Columns: 5</span></span>
+<span><span class="co">#&gt; $ Sepal.Length &lt;dbl&gt; 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.…</span></span>
+<span><span class="co">#&gt; $ Sepal.Width  &lt;dbl&gt; 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.…</span></span>
+<span><span class="co">#&gt; $ Petal.Length &lt;dbl&gt; 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.…</span></span>
+<span><span class="co">#&gt; $ Petal.Width  &lt;dbl&gt; 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.…</span></span>
+<span><span class="co">#&gt; $ Species      &lt;fct&gt; setosa, setosa, setosa, setosa, setosa, setosa, setosa, s…</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ou ainda, a função <code><a href="https://rdrr.io/r/utils/View.html">View()</a></code> (vide <a href="basico.html#sec-dataf" class="quarto-xref"><span>Seção 3.10</span></a>).</p>
+</section><section id="criando-tibble" class="level3" data-number="5.2.2"><h3 data-number="5.2.2" class="anchored" data-anchor-id="criando-tibble">
+<span class="header-section-number">5.2.2</span> Criando Tibble</h3>
+<p>Também podemos criar uma <em>tibble</em> dentro do R com a função <code><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  nomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"José"</span>, <span class="st">"João"</span>, <span class="st">"Maria"</span>, <span class="st">"Ana"</span><span class="op">)</span>,</span>
+<span>  sexo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"F"</span><span class="op">)</span>,</span>
+<span>  idade <span class="op">=</span> <span class="fl">21</span><span class="op">:</span><span class="fl">24</span>,</span>
+<span>  idade_ao_quadrado <span class="op">=</span> <span class="va">idade</span> <span class="op">^</span> <span class="fl">2</span>,</span>
+<span>  filhos <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 5</span></span>
+<span><span class="co">#&gt;   nomes sexo  idade idade_ao_quadrado filhos</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;int&gt;             &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 José  M        21               441      0</span></span>
+<span><span class="co">#&gt; 2 João  M        22               484      0</span></span>
+<span><span class="co">#&gt; 3 Maria F        23               529      0</span></span>
+<span><span class="co">#&gt; 4 Ana   F        24               576      0</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A construção de uma <em>tibble</em> segue a mesma lógica apresentada na <a href="basico.html#sec-dataf" class="quarto-xref"><span>Seção 3.10</span></a> quando criamos um <em>data frame</em> com a função <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code>. Primeiro, designamos os nomes das variáveis e, posteriormente, o vetor com seus valores.</p>
+<p>No exemplo acima, veja que foi possível criar a coluna <code>idade_ao_quadrado</code> em função de outra coluna, a <code>idade</code>. Na coluna <code>filhos</code>, passamos um vetor de tamanho 1, ocorrendo o processo de reciclagem (vide <a href="basico.html#sec-vetor" class="quarto-xref"><span>Seção 3.6</span></a>), ou seja, foi atribuído o valor <code>0</code> para todas as demais observações até que se igualasse o número de linhas da <em>tibble</em>.</p>
+<p>É possível colocar nomes de colunas com caracteres de sintaxe inválida (vide <a href="basico.html#sec-objetos" class="quarto-xref"><span>Seção 3.3</span></a>), desde que os nomes estejam entre acentos graves (<code>``</code>).</p>
+<p>No caso dos <em>data frames</em>, teríamos dificuldades em trabalhar com esse tipo de sintaxe, pois os nomes seriam convertidos para um formato que se enquadre à sintaxe válida, portanto, ocorreria uma alteração dos nomes designados originalmente.</p>
+<p>A seguir, criaremos um exemplo de <em>tibble</em> (puramente a título de ilustração) com nomes que contêm espaços, começam com números e possuem caracteres especiais.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  `nomes dos estudantes` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"João"</span>, <span class="st">"José"</span>, <span class="st">"Sara"</span><span class="op">)</span>,</span>
+<span>  `2sexo` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span>,</span>
+<span>  `:)idade` <span class="op">=</span> <span class="fl">21</span><span class="op">:</span><span class="fl">23</span>,</span>
+<span>  `idade²` <span class="op">=</span> <span class="va">`:)idade`</span> <span class="op">^</span> <span class="fl">2</span>,</span>
+<span>  `nº filhos` <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
+<span><span class="co">#&gt;   `nomes dos estudantes` `2sexo` `:)idade` `idade²` `nº filhos`</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                  &lt;chr&gt;       &lt;int&gt;    &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 João                   M              21      441           0</span></span>
+<span><span class="co">#&gt; 2 José                   M              22      484           0</span></span>
+<span><span class="co">#&gt; 3 Sara                   F              23      529           0</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Por consequência, quando trabalharmos com as variáveis nomeadas dessa forma, precisaremos colocá-las sempre entre acentos graves, como foi o caso da construção da coluna <code>idade²</code>, em que tivemos que colocar a coluna <code>:)idade</code> entre acentos graves para que conseguíssemos elevar seus valores ao quadrado.</p>
+<p>Ainda que a <em>tibble</em> permita trabalhar com esse tipo de sintaxe, recomenda-se evitá-las, a fim de evitar o uso dos acentos graves a todo momento que formos referenciar uma coluna, tornando o trabalho mais fácil.</p>
+<p>Por último, podemos criar <em>tibble</em> com a função <code><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble()</a></code>. A <code><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble()</a></code> é construída de maneira transposta ao formato convencional. Na primeira entrada, colocamos os nomes das variáveis começando com <code>~</code>, separadas por vírgulas. Em seguida, colocamos os valores de cada observação. Esta opção é uma forma mais visual e intuitiva para construir pequenas <em>tibble</em>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">nome</span>, <span class="op">~</span><span class="va">idade</span>, <span class="op">~</span><span class="va">sexo</span>,</span>
+<span>  <span class="st">"João"</span>,  <span class="fl">21</span>  , <span class="st">"M"</span>,</span>
+<span>  <span class="st">"José"</span>,  <span class="fl">22</span>  , <span class="st">"M"</span>,</span>
+<span>  <span class="st">"Sara"</span>,  <span class="fl">23</span>  , <span class="st">"F"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   nome  idade sexo </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 João     21 M    </span></span>
+<span><span class="co">#&gt; 2 José     22 M    </span></span>
+<span><span class="co">#&gt; 3 Sara     23 F</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="sec-tidy-data" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="sec-tidy-data">
+<span class="header-section-number">5.3</span> Dados arrumados</h2>
+<p>Um mesmo conjunto de dados pode ser disposto de diversas maneiras. Os exemplos a seguir mostram três formas de organização. Os dados são referentes a produção (em toneladas) e a área colhida (em hectares) de milho, no Brasil, China e Índia, nos anos de 2000 e 2019.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/tidy1.csv"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   pais     ano colheita  producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil  2000 11890376  32321000</span></span>
+<span><span class="co">#&gt; 2 Brasil  2019 17518054 101138617</span></span>
+<span><span class="co">#&gt; 3 China   2000 23086228 106178315</span></span>
+<span><span class="co">#&gt; 4 China   2019 41309740 260957662</span></span>
+<span><span class="co">#&gt; 5 India   2000  6611300  12043200</span></span>
+<span><span class="co">#&gt; 6 India   2019  9027130  27715100</span></span>
+<span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/tidy2.csv"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 12 × 4</span></span>
+<span><span class="co">#&gt;    pais     ano tipo         valor</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Brasil  2000 colheita  11890376</span></span>
+<span><span class="co">#&gt;  2 Brasil  2019 colheita  17518054</span></span>
+<span><span class="co">#&gt;  3 Brasil  2000 producao  32321000</span></span>
+<span><span class="co">#&gt;  4 Brasil  2019 producao 101138617</span></span>
+<span><span class="co">#&gt;  5 China   2000 colheita  23086228</span></span>
+<span><span class="co">#&gt;  6 China   2019 colheita  41309740</span></span>
+<span><span class="co">#&gt;  7 China   2000 producao 106178315</span></span>
+<span><span class="co">#&gt;  8 China   2019 producao 260957662</span></span>
+<span><span class="co">#&gt;  9 India   2000 colheita   6611300</span></span>
+<span><span class="co">#&gt; 10 India   2019 colheita   9027130</span></span>
+<span><span class="co">#&gt; 11 India   2000 producao  12043200</span></span>
+<span><span class="co">#&gt; 12 India   2019 producao  27715100</span></span>
+<span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/tidy3.csv"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   pais     ano produtividade     </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;             </span></span>
+<span><span class="co">#&gt; 1 Brasil  2000 32321000/11890376 </span></span>
+<span><span class="co">#&gt; 2 Brasil  2019 101138617/17518054</span></span>
+<span><span class="co">#&gt; 3 China   2000 106178315/23086228</span></span>
+<span><span class="co">#&gt; 4 China   2019 260957662/41309740</span></span>
+<span><span class="co">#&gt; 5 India   2000 12043200/6611300  </span></span>
+<span><span class="co">#&gt; 6 India   2019 27715100/9027130</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Todos os exemplos são maneiras distintas de representar um mesmo conjunto de dados. Contudo, apenas uma delas é uma <strong><em>tidy data</em></strong> (ou <strong>base de dados arrumada</strong>).</p>
+<p>Uma <em>tidy data</em> deve seguir três propriedades:</p>
+<ul>
+<li><p>Cada variável possui sua própria coluna;</p></li>
+<li><p>Cada observação possui sua própria linha;</p></li>
+<li><p>Cada célula contém somente um único valor.</p></li>
+</ul>
+<p>A <a href="#fig-tidy" class="quarto-xref">Figura&nbsp;<span>5.2</span></a> ilustra, visualmente, as propriedades.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-tidy" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-tidy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="imagens/tidy-data.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tidy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.2: Seguindo os princípios da tidy data, cada variável possui uma coluna, cada observação está em uma linha e cada célula contém somente um valor.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Ao designar uma variável à uma única coluna, podemos trabalhar com as informações a partir de vetores individualizados. Portanto, os conceitos vistos na <a href="basico.html#sec-vetor" class="quarto-xref"><span>Seção 3.6</span></a>, referente aos vetores, são aplicáveis a cada uma das colunas de uma base de dados organizada. E é a partir dessa lógica que os pacotes do <code>tidyverse</code> trabalham.</p>
+<p>Dentre os três exemplos ilustrados anteriormente, apenas o primeiro caso ilustra uma <em>tidy data</em>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/tidy1.csv"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   pais     ano colheita  producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil  2000 11890376  32321000</span></span>
+<span><span class="co">#&gt; 2 Brasil  2019 17518054 101138617</span></span>
+<span><span class="co">#&gt; 3 China   2000 23086228 106178315</span></span>
+<span><span class="co">#&gt; 4 China   2019 41309740 260957662</span></span>
+<span><span class="co">#&gt; 5 India   2000  6611300  12043200</span></span>
+<span><span class="co">#&gt; 6 India   2019  9027130  27715100</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Dessa forma, sempre que se deparar com um novo conjunto de dados, observe primeiro quais elementos são variáveis e quais são observações, e se uma célula contém um ou mais valores.</p>
+<p>Nos próximos capítulos, veremos como utilizar uma <em>tidy data</em> para realizar transformações e gráficos. Mas antes, trataremos sobre os dados desarrumados<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+</section><section id="sec-pivot" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="sec-pivot">
+<span class="header-section-number">5.4</span> Pivotagem</h2>
+<p>Uma maneira de organizar os dados desarrumados é realizar a <strong>pivotagem</strong>. Este método converte as observações que estão como nome de colunas para linhas ou variáveis que estão em linhas para nomes de colunas.</p>
+<p>Para isso, utilizamos duas funções do pacote <code>tidyr</code>: <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> e <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code>.</p>
+<section id="alongando-os-dados" class="level3" data-number="5.4.1"><h3 data-number="5.4.1" class="anchored" data-anchor-id="alongando-os-dados">
+<span class="header-section-number">5.4.1</span> Alongando os dados</h3>
+<p>A função <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> converte as observações que estão como nome das colunas, para linhas. Com isso, a função torna a base de dados mais <strong>longa</strong>, ou seja, reduz o número de colunas e aumenta o número de linhas.</p>
+<p>Aplicaremos sua função no arquivo <code>tidy-producao.csv</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">producao</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/tidy-producao.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">producao</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   pais      `2000`    `2019`</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil  32321000 101138617</span></span>
+<span><span class="co">#&gt; 2 China  106178315 260957662</span></span>
+<span><span class="co">#&gt; 3 India   12043200  27715100</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Veja que as observações referentes aos anos de <code>2000</code> e <code>2019</code> estão como nome das colunas, cada uma com os respectivos valores de produção de milho.</p>
+<p>Para isso, devemos criar duas novas colunas, uma para alocar os anos e outra para os valores de produção de milho.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">producao_alongada</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">producao</span>,</span>
+<span>  cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">`2000`</span>, <span class="va">`2019`</span><span class="op">)</span>,</span>
+<span>  names_to <span class="op">=</span> <span class="st">"ano"</span>, </span>
+<span>  values_to <span class="op">=</span> <span class="st">"producao"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">producao_alongada</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   pais   ano    producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil 2000   32321000</span></span>
+<span><span class="co">#&gt; 2 Brasil 2019  101138617</span></span>
+<span><span class="co">#&gt; 3 China  2000  106178315</span></span>
+<span><span class="co">#&gt; 4 China  2019  260957662</span></span>
+<span><span class="co">#&gt; 5 India  2000   12043200</span></span>
+<span><span class="co">#&gt; 6 India  2019   27715100</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A função <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> apresenta os seguintes argumentos:</p>
+<ul>
+<li><p><code>data =</code> para indicar qual objeto desejamos pivotar;</p></li>
+<li><p><code>cols =</code> para selecionar as colunas que desejamos pivotar, ou seja, as colunas que não são variáveis (<code>2000</code> e <code>2019</code>);</p></li>
+<li><p><code>names_to =</code> dizemos para qual coluna os nomes selecionados em <code>cols =</code> devem ir. No caso, <code>2000</code> e <code>2019</code> são redirecionadas para a nova coluna de nome <code>"ano"</code>;</p></li>
+<li><p><code>values_to =</code> dizemos para qual coluna os valores das colunas selecionadas em <code>cols =</code> devem ir. Portanto, os valores das colunas <code>2000</code> e <code>2019</code> são redirecionados para a nova coluna <code>"producao"</code>.</p></li>
+</ul>
+<p>Perceba que os valores se mantém associados às antigas colunas <code>2000</code> e <code>2019</code>, agora como valores de uma observação.</p>
+<p>Podemos fazer o mesmo com os dados referentes à área colhida, presente no arquivo <code>tidy-colheita.csv</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">colheita</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/tidy-colheita.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">colheita</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   pais     `2000`   `2019`</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil 11890376 17518054</span></span>
+<span><span class="co">#&gt; 2 China  23086228 41309740</span></span>
+<span><span class="co">#&gt; 3 India   6611300  9027130</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para isso, devemos alterar somente o atributo do argumento <code>values_to =</code> para <code>"colheita"</code>, além do nome do objeto a ser pivotado (<code>data = colheita</code>).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">colheita_alongada</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">colheita</span>,</span>
+<span>  cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">`2000`</span>, <span class="va">`2019`</span><span class="op">)</span>,</span>
+<span>  names_to <span class="op">=</span> <span class="st">"ano"</span>, </span>
+<span>  values_to <span class="op">=</span> <span class="st">"colheita"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">colheita_alongada</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   pais   ano   colheita</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil 2000  11890376</span></span>
+<span><span class="co">#&gt; 2 Brasil 2019  17518054</span></span>
+<span><span class="co">#&gt; 3 China  2000  23086228</span></span>
+<span><span class="co">#&gt; 4 China  2019  41309740</span></span>
+<span><span class="co">#&gt; 5 India  2000   6611300</span></span>
+<span><span class="co">#&gt; 6 India  2019   9027130</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A <a href="#fig-p-longer" class="quarto-xref">Figura&nbsp;<span>5.3</span></a> ilustra o funcionamento da função <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-p-longer" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-p-longer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="imagens/pivot-longer.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-p-longer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.3: As colunas pivotadas são convertidas em valores de uma nova coluna. Consequentemente, seus valores também são alocados em uma nova coluna. Perceba que o conjunto de dados passa a ficar mais longo.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Para juntar ambas as tabelas, utilizamos a função <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::full_join()</a></code>, a qual veremos com mais detalhes no <a href="joins.html" class="quarto-xref"><span>Capítulo 8</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join</a></span><span class="op">(</span><span class="va">producao_alongada</span>, <span class="va">colheita_alongada</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   pais   ano    producao colheita</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil 2000   32321000 11890376</span></span>
+<span><span class="co">#&gt; 2 Brasil 2019  101138617 17518054</span></span>
+<span><span class="co">#&gt; 3 China  2000  106178315 23086228</span></span>
+<span><span class="co">#&gt; 4 China  2019  260957662 41309740</span></span>
+<span><span class="co">#&gt; 5 India  2000   12043200  6611300</span></span>
+<span><span class="co">#&gt; 6 India  2019   27715100  9027130</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="alargando-os-dados" class="level3" data-number="5.4.2"><h3 data-number="5.4.2" class="anchored" data-anchor-id="alargando-os-dados">
+<span class="header-section-number">5.4.2</span> Alargando os dados</h3>
+<p>A função <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> é a oposta da <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code>. Ela é usada para converter as variáveis que estão nas linhas, para o nome das colunas. Dessa forma, podemos dizer que a função deixa a base de dados mais <strong>larga</strong>, portanto, aumenta o número de colunas e diminui o número de linhas.</p>
+<p>Como exemplo, utilizaremos o arquivo <code>tidy2.csv</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">producao_colheita</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/tidy2.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">producao_colheita</span></span>
+<span><span class="co">#&gt; # A tibble: 12 × 4</span></span>
+<span><span class="co">#&gt;    pais     ano tipo         valor</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Brasil  2000 colheita  11890376</span></span>
+<span><span class="co">#&gt;  2 Brasil  2019 colheita  17518054</span></span>
+<span><span class="co">#&gt;  3 Brasil  2000 producao  32321000</span></span>
+<span><span class="co">#&gt;  4 Brasil  2019 producao 101138617</span></span>
+<span><span class="co">#&gt;  5 China   2000 colheita  23086228</span></span>
+<span><span class="co">#&gt;  6 China   2019 colheita  41309740</span></span>
+<span><span class="co">#&gt;  7 China   2000 producao 106178315</span></span>
+<span><span class="co">#&gt;  8 China   2019 producao 260957662</span></span>
+<span><span class="co">#&gt;  9 India   2000 colheita   6611300</span></span>
+<span><span class="co">#&gt; 10 India   2019 colheita   9027130</span></span>
+<span><span class="co">#&gt; 11 India   2000 producao  12043200</span></span>
+<span><span class="co">#&gt; 12 India   2019 producao  27715100</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Neste caso, as variáveis <code>colheita</code> e <code>producao</code> estão como valores de observações. Portanto, devemos transformá-las em nomes de colunas, recebendo os respectivos valores associados à coluna <code>valor</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">producao_colheita_alargada</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">producao_colheita</span>,</span>
+<span>  names_from <span class="op">=</span> <span class="va">tipo</span>,</span>
+<span>  values_from <span class="op">=</span> <span class="va">valor</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">producao_colheita_alargada</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   pais     ano colheita  producao</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil  2000 11890376  32321000</span></span>
+<span><span class="co">#&gt; 2 Brasil  2019 17518054 101138617</span></span>
+<span><span class="co">#&gt; 3 China   2000 23086228 106178315</span></span>
+<span><span class="co">#&gt; 4 China   2019 41309740 260957662</span></span>
+<span><span class="co">#&gt; 5 India   2000  6611300  12043200</span></span>
+<span><span class="co">#&gt; 6 India   2019  9027130  27715100</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A função <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> apresenta os seguinte argumentos:</p>
+<ul>
+<li><p><code>data =</code> para indicar qual objeto desejamos pivotar;</p></li>
+<li><p><code>names_from =</code> dizemos em qual coluna estão as variáveis que desejamos converter para nome de colunas. No exemplo, convertemos <code>producao</code> e <code>colheita</code> da coluna <code>tipo</code>;</p></li>
+<li><p><code>values_from =</code> indica em qual coluna estão localizados os valores das novas colunas criadas.</p></li>
+</ul>
+<p>A <a href="#fig-p-wider" class="quarto-xref">Figura&nbsp;<span>5.4</span></a> ilustra o funcionamento da função <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-p-wider" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-p-wider-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="imagens/pivot-wider.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-p-wider-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.4: Com a pivot_wider(), convertemos variáveis presentes como observações de uma coluna para nomes de colunas. Dessa forma, o conjunto de dados passa a ficar mais largo.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>As funções de pivotagem apresentam outros diversos argumentos. Para saber mais sobre elas, confira a página <a href="https://tidyr.tidyverse.org/articles/pivot.html" class="uri">https://tidyr.tidyverse.org/articles/pivot.html</a>.</p>
+</section></section><section id="separar-e-unir" class="level2" data-number="5.5"><h2 data-number="5.5" class="anchored" data-anchor-id="separar-e-unir">
+<span class="header-section-number">5.5</span> Separar e Unir</h2>
+<p>Quando uma célula apresenta mais de um valor, devemos separá-los para termos uma <em>tidy data</em>. Para isso, utilizamos a função <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code> do pacote <code>tidyr</code>. Utilizaremos os dados do arquivo <code>tidy3.csv</code> para ilustrar seu uso.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"dados/tidy3.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">prod</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   pais     ano produtividade     </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;             </span></span>
+<span><span class="co">#&gt; 1 Brasil  2000 32321000/11890376 </span></span>
+<span><span class="co">#&gt; 2 Brasil  2019 101138617/17518054</span></span>
+<span><span class="co">#&gt; 3 China   2000 106178315/23086228</span></span>
+<span><span class="co">#&gt; 4 China   2019 260957662/41309740</span></span>
+<span><span class="co">#&gt; 5 India   2000 12043200/6611300  </span></span>
+<span><span class="co">#&gt; 6 India   2019 27715100/9027130</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A produtividade de uma lavoura é dada pela razão entre a produção e a área colhida. Portanto, a variável <code>produtividade</code> tem os valores de produção e colheita representados na mesma célula.</p>
+<p>Uma vez que <code>produção</code> e <code>colheita</code> são variáveis, devemos colocá-las em colunas.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">prod</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">produtividade</span>,</span>
+<span>  into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"producao"</span>, <span class="st">"colheita"</span><span class="op">)</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"/"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   pais     ano producao  colheita</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;   </span></span>
+<span><span class="co">#&gt; 1 Brasil  2000 32321000  11890376</span></span>
+<span><span class="co">#&gt; 2 Brasil  2019 101138617 17518054</span></span>
+<span><span class="co">#&gt; 3 China   2000 106178315 23086228</span></span>
+<span><span class="co">#&gt; 4 China   2019 260957662 41309740</span></span>
+<span><span class="co">#&gt; 5 India   2000 12043200  6611300 </span></span>
+<span><span class="co">#&gt; 6 India   2019 27715100  9027130</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Na função <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code>, utilizamos os seguintes argumentos:</p>
+<ul>
+<li><p><code>data =</code> para indicar o objeto a ser separado;</p></li>
+<li><p><code>col =</code> indicamos qual coluna será desmembrada, no caso, a <code>produtividade</code>;</p></li>
+<li><p><code>into =</code> dizemos o nome das novas colunas que direcionaremos os valores da coluna separada, ou seja, <code>"producao"</code> e <code>"colheita"</code>;</p></li>
+<li><p><code>sep =</code> indicamos qual o operador está separando os valores.</p></li>
+</ul>
+<p>Perceba que a classe das novas colunas vieram como do tipo caractere, apesar de serem numéricas. Por padrão, a função <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code> sempre adotará essa classe. Para corrigirmos a classe, podemos utilizar o argumento <code>convert = TRUE</code>, ou seja, pedir para a função adotar uma classe mais apropriada aos valores contidos nas colunas.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prod_separado</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">prod</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">produtividade</span>,</span>
+<span>  into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"producao"</span>, <span class="st">"colheita"</span><span class="op">)</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"/"</span>,</span>
+<span>  convert <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">prod_separado</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   pais     ano  producao colheita</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt;     &lt;int&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil  2000  32321000 11890376</span></span>
+<span><span class="co">#&gt; 2 Brasil  2019 101138617 17518054</span></span>
+<span><span class="co">#&gt; 3 China   2000 106178315 23086228</span></span>
+<span><span class="co">#&gt; 4 China   2019 260957662 41309740</span></span>
+<span><span class="co">#&gt; 5 India   2000  12043200  6611300</span></span>
+<span><span class="co">#&gt; 6 India   2019  27715100  9027130</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Feito isso, temos a classe de números inteiros (<code>&lt;int&gt;</code>) para as colunas <code>producao</code> e <code>colheita</code>.</p>
+<p>Também podemos separar valores de acordo com uma quantidade de caracteres. Para isso, informamos no argumento <code>sep =</code> a quantidade dos primeiros caracteres que desejamos quebrar.</p>
+<p>Por exemplo, para separar os valores da coluna <code>ano</code> em <code>seculo</code> e <code>decada</code>, podemos passar o argumento <code>sep = 2</code>, ou seja, o argumento selecionará os dois primeiros caracteres dos valores contidos na coluna <code>ano</code> e os separará dos demais, formando as novas colunas <code>seculo</code> e <code>decada</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">separar_ano</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">prod_separado</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">ano</span>,</span>
+<span>  into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"seculo"</span>, <span class="st">"decada"</span><span class="op">)</span>,</span>
+<span>  sep <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">separar_ano</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   pais   seculo decada  producao colheita</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;      &lt;int&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil 20     00      32321000 11890376</span></span>
+<span><span class="co">#&gt; 2 Brasil 20     19     101138617 17518054</span></span>
+<span><span class="co">#&gt; 3 China  20     00     106178315 23086228</span></span>
+<span><span class="co">#&gt; 4 China  20     19     260957662 41309740</span></span>
+<span><span class="co">#&gt; 5 India  20     00      12043200  6611300</span></span>
+<span><span class="co">#&gt; 6 India  20     19      27715100  9027130</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Caso houver um número negativo, o argumento considera o sinal de negativo como o primeiro caractere informado no argumento.</p>
+<p>Por outro lado, temos a função <code><a href="https://tidyr.tidyverse.org/reference/unite.html">unite()</a></code>, também do pacote <code>tidyr</code>, que combina múltiplas colunas em uma única. Como exemplo, juntaremos, novamente, as colunas <code>seculo</code> e <code>decada</code> na nova coluna <code>novamente_ano</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html">unite</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">separar_ano</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"novamente_ano"</span>,</span>
+<span>  <span class="va">seculo</span>, <span class="va">decada</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">""</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   pais   novamente_ano  producao colheita</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;             &lt;int&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Brasil 2000           32321000 11890376</span></span>
+<span><span class="co">#&gt; 2 Brasil 2019          101138617 17518054</span></span>
+<span><span class="co">#&gt; 3 China  2000          106178315 23086228</span></span>
+<span><span class="co">#&gt; 4 China  2019          260957662 41309740</span></span>
+<span><span class="co">#&gt; 5 India  2000           12043200  6611300</span></span>
+<span><span class="co">#&gt; 6 India  2019           27715100  9027130</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No argumento <code>col =</code> declaramos o nome da nova coluna, seguida das colunas a serem juntadas (<code>seculo</code> e <code>decada</code>). Por fim, <code>sep =</code> informa qual o separador utilizado (no caso, o operador <code>""</code> indica a não utilização de separador). Caso não fosse informado o argumento <code>sep =</code>, por padrão, a função adota o <em>underline</em> (<code>_</code>) como separador.</p>
+</section><section id="resumo" class="level2" data-number="5.6"><h2 data-number="5.6" class="anchored" data-anchor-id="resumo">
+<span class="header-section-number">5.6</span> Resumo</h2>
+<p>Caso queira conhecer mais sobre a <em>tidy data</em> e sua relação com o <code>tidyverse</code>, recomendo o documento <a href="https://tidyverse.tidyverse.org/articles/manifesto.html"><em>The tidy tools manifesto</em></a>, que aborda os princípios norteadores do <em>tidyverse</em>, além do artigo <a href="https://www.jstatsoft.org/article/view/v059i10"><em>Tidy Data</em></a>, que trata de maneira teórica os conceitos de dados arrumados. Ambos os materiais são de autoria de Hadley Wickham, o idealizador do pacote <code>tidyverse</code>.</p>
+<p>A seguir, agora com os dados arrumados, veremos como transformar os dados para que contenham apenas as variáveis de nosso interesse e também criar novas variáveis, a partir das existentes.</p>
+
+
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Utilizar o modelo tradicional de <em>data frame</em> junto ao <code>tidyverse</code> não é um impeditivo. Porém, utilizar a <em>tibble</em> evita qualquer possível incompatibiliade.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Quando nos referirmos a dados <em>desarrumados</em>, entenda como dados fora do padrão <em>tidy data</em> ou <em>não-tidy</em>, uma vez que o formato <em>tidy</em> é um dos possíveis para se trabalhar com dados, principalmente quando trabalhamos com o pacote <code>tidyverse</code>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/gustavojy\.github\.io\/apostila-icdr\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./importar.html" class="pagination-link" aria-label="Importação">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Importação</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./transformar.html" class="pagination-link" aria-label="Transformação">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Transformação</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Introdução à Ciência de Dados em R. 2ª Edição, 2025.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gustavojy/icdr/edit/main/arrumar.qmd" class="toc-action"><i class="bi bi-github"></i>Editar essa página</a></li><li><a href="https://github.com/gustavojy/icdr/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Este material foi confeccionado com <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>
